@@ -1,0 +1,274 @@
+@import '../fonts/Fonts.css';
+@import 'MFXColors.css';
+
+
+/**************************************************
+ * Root
+**************************************************/
+.rootPane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-color: c1c1c1;
+    -fx-border-radius: 10;
+}
+
+/**************************************************
+ * Window Header
+**************************************************/
+.rootPane .close-icon {
+    -mfx-color: -mfx-red;
+    -fx-opacity: 0.5;
+}
+
+.rootPane .close-icon:hover {
+    -fx-opacity: 1.0;
+}
+
+.rootPane .minimize-icon {
+    -mfx-color: #ffbf37;
+    -fx-opacity: 0.5;
+}
+
+.rootPane .maximize-icon {
+    -mfx-color: #5CCBA3;
+    -fx-opacity: 0.5;
+}
+
+.rootPane .minimize-icon:hover {
+    -fx-opacity: 1.0;
+}
+
+.rootPane .always-on-top-icon {
+    -mfx-color: -mfx-purple;
+    -fx-opacity: 0.5;
+}
+
+.rootPane .always-on-top-icon:hover {
+    -fx-opacity: 1.0;
+}
+
+.rootPane .always-on-top-icon:always-on-top {
+    -fx-opacity: 1.0;
+}
+
+
+/**************************************************
+ * Sidebar
+**************************************************/
+.rootPane .sidebar {
+    -fx-background-color: -mfx-purple;
+    -fx-background-insets: -1 -5 -1 -1;
+    -fx-background-radius: 0 20 20 0;
+}
+
+.rootPane .sidebar .header {
+    -fx-font-family: 'Visby Round CF Heavy';
+    -fx-font-size: 24;
+    -fx-text-fill: black;
+}
+
+.rootPane .sidebar .header .mfx-font-icon {
+    -mfx-color: white;
+}
+
+.rootPane .sidebar .mfx-scroll-pane {
+    -fx-background-color: transparent;
+
+    -track-color: rgba(255, 255, 255, 0.3);
+    -thumb-color: white;
+    -thumb-hover-color: white;
+}
+
+.rootPane .sidebar .menu-label {
+    -fx-font-family: 'Visby Round CF Bold';
+    -fx-font-size: 14;
+    -fx-text-fill: black;
+}
+
+.rootPane .sidebar .navbar .mfx-rectangle-toggle-node {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-pref-height: 40;
+
+    -fx-font-family: 'Visby Round CF Demi Bold';
+    -fx-font-size: 13;
+    -fx-text-fill: black;
+}
+
+.rootPane .sidebar .navbar .mfx-rectangle-toggle-node .mfx-ripple-generator {
+    -mfx-paused: true;
+}
+
+.rootPane .sidebar .navbar .mfx-rectangle-toggle-node .mfx-icon-wrapper .mfx-font-icon {
+    -mfx-color: white;
+}
+
+.rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-text-fill: #601cbe;
+}
+
+.rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .selection-rectangle {
+    -fx-stroke: transparent;
+    -fx-fill: #601cbe;
+}
+
+.rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .mfx-icon-wrapper .mfx-font-icon {
+    -mfx-color: #601cbe;
+}
+
+.tab-pane:top, .tab-pane:top .tab-header-area, .tab-pane:top .tab-header-area .headers-region .tab:selected:top,
+.tab-pane:top .tab-header-area .tab-header-background,
+.tab-pane:top .tab-content-area, .scroll-pane:fitToHeight,
+.tab-pane:top .tab-header-area .headers-region .tab:top,
+.scroll-pane .viewport, .scroll-pane, .scroll-pane:fitToWidth,
+.scroll-pane:fitToWidth:fitToHeight,
+.tree-table-row-cell:filled .table-column:filled,
+.tree-table-view .virtual-flow .clipped-container .sheet .tree-table-row-cell,
+.check-box:determinate .box, .text-area .scroll-pane .viewport .content,
+.spinner:focused,
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button,
+.text-area
+{
+    -fx-background-color : transparent;
+}
+
+
+.tab-pane:top .tab-header-area .tab-header-background
+{
+    -fx-border-width : 0px 0px 1px 0px;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+
+
+.tab-pane:top .tab-header-area .headers-region .tab:top
+{
+    -fx-border-width : 0px 0px 2px 0px;
+}
+
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top
+{
+    -fx-border-width : 2px 0px 2px 0px;
+}
+
+.tab-pane
+{
+    -fx-tab-min-width:10px;
+}
+
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+.tab-pane .tab
+{
+    -fx-background-color: #ffffff;
+
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color: #fafafa;
+}
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 8px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #252654;
+}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected > .tab-container > .tab-label
+{
+    -fx-text-fill : #252654;
+}
+
+.tab-pane:top .tab-header-area .tab-header-background
+{
+    -fx-border-color : grey;
+}
+
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top
+{
+    -fx-border-color : transparent transparent -base transparent ;
+}
+
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top
+{
+    -fx-focus-color : transparent;
+}
+
+
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top
+{
+    -fx-faint-focus-color : transparent;
+}
+
+
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label
+{
+    -fx-font-weight : bold;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label
+{
+    -fx-alignment: CENTER;
+}
+
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top
+{
+    -fx-border-color : transparent transparent #4849a1 transparent ;
+}
+
+
+/*// Color of the list-cell selected + unselected: transparent*/
+   .list-view .list-cell,
+   .list-view .list-cell:filled,
+   .list-view .list-cell:selected,
+   .list-view .list-cell:focused,
+   .list-view .list-cell:hover {
+       -fx-background-color: transparent;
+       -fx-effect: null;
+   }
+
+/*// Color of the custom control hover*/
+   .list-view .list-cell:hover .email-view {
+       -fx-background-color: greenyellow;
+   }
+
+/*// Color of the custom control selected*/
+   .list-view .list-cell:filled:selected:focused .email-view,
+   .list-view .list-cell:filled:selected .email-view {
+       -fx-background-color: green;
+   }
+
+
+
+.list-cell-chat {
+
+    -fx-background-color: transparent;
+}
+.list-view-chat {
+
+    -fx-background-color: transparent;
+}
+
+
+.wallpaper-stack-pane > .viewport{
+
+}
+
+.scroll-pane .viewport  .viewport{
+
+}
