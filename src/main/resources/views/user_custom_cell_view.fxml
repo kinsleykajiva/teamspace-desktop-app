@@ -15,9 +15,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="181.0" style="-fx-background-color: #f9f9fc;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER" layoutX="-1.0" prefHeight="45.0" prefWidth="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutX="-1.0" prefHeight="45.0" prefWidth="24.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fx:id="avatarImage" fitHeight="20.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="avatarImage" fitHeight="18.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/businessmen.png" />
                </image>
@@ -52,11 +52,14 @@
          <children>
             <Label fx:id="messageTimeLabel" alignment="CENTER" text="10:00" textAlignment="CENTER" textFill="#bebec8">
                <font>
-                  <Font name="Segoe UI" size="10.0" />
+                  <Font name="Segoe UI" size="8.0" />
                </font>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+               <padding>
+                  <Insets top="4.0" />
+               </padding>
             </Label>
             <StackPane prefHeight="150.0" prefWidth="200.0">
                <children>
