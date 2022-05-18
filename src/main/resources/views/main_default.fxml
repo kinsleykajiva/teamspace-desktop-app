@@ -21,6 +21,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
+<?import javafx.scene.shape.Line?>
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="rootPane" stylesheets="@../styles/parent.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="team.space.controllers.MainController">
    <StackPane fx:id="contentPane" layoutX="78.0" layoutY="12.0" prefHeight="706.0" prefWidth="972.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="77.0" AnchorPane.rightAnchor="231.0" AnchorPane.topAnchor="9.0">
       <children>
@@ -254,7 +255,65 @@
       <padding>
          <Insets bottom="5.0" top="5.0" />
       </padding></HBox>
-   <VBox layoutX="1052.0" layoutY="109.0" prefHeight="533.0" prefWidth="222.0" style="-fx-background-color: #f4f4fa; -fx-background-radius: 20;" AnchorPane.bottomAnchor="77.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="109.0" />
+   <VBox layoutX="1052.0" layoutY="109.0" prefHeight="533.0" prefWidth="222.0" style="-fx-background-color: #f4f4fa; -fx-background-radius: 20;" AnchorPane.bottomAnchor="77.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="109.0" >
+      <children>
+         <GNAvatarView prefHeight="60.0" prefWidth="60.0">
+            <image>
+               <Image url="@../images/user11.png" />
+            </image>
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </GNAvatarView>
+
+         <HBox alignment="CENTER">
+            <children>
+               <Label minWidth="-Infinity" prefHeight="25.0" text="Joao Victor" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font>
+               </Label>
+            </children>
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </HBox>
+
+
+         <HBox alignment="CENTER" layoutX="10.0" layoutY="90.0" spacing="15.0">
+            <children>
+               <ImageView fitHeight="15.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/whatsapp.png" />
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="15.0" fitWidth="50.0" layoutX="114.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/facebook.png" />
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="15.0" fitWidth="50.0" layoutX="121.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/insta.png" />
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="15.0" fitWidth="50.0" layoutX="129.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/envelope1.png" />
+                  </image>
+               </ImageView>
+            </children>
+            <VBox.margin>
+               <Insets top="5.0" />
+            </VBox.margin>
+         </HBox>
+         <Line endX="120.0" startX="-100.0" stroke="#909093" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin>
+         </Line>
+      </children>
+   </VBox>
 
 
 </AnchorPane>
