@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="232.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox alignment="CENTER" layoutX="-1.0" prefHeight="45.0" prefWidth="24.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <ImageView fx:id="avatarImage1111" fitHeight="18.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/businessmen.png" />
+                    </image>
+                </ImageView>
+            </children>
+            <padding>
+                <Insets left="5.0" />
+            </padding>
+        </VBox>
+        <HBox layoutX="30.0" prefHeight="45.0" prefWidth="151.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="201.0" spacing="2.0">
+                    <children>
+                        <Label fx:id="userNameLabel" text="User name" textAlignment="CENTER" textFill="#7a7e89">
+                            <font>
+                                <Font name="Segoe UI Bold" size="7.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="userNameLabel1" layoutX="10.0" layoutY="10.0" prefHeight="13.0" prefWidth="141.0" text="if you are going to use page" textAlignment="CENTER" textFill="#35373c">
+                            <font>
+                                <Font name="Segoe UI Bold" size="10.0" />
+                            </font>
+                        </Label>
+                      <Label fx:id="messageTimeLabel" alignment="CENTER" text="1 day ago" textAlignment="CENTER" textFill="#bebec8">
+                          <font>
+                              <Font name="Segoe UI" size="8.0" />
+                          </font>
+                          <VBox.margin>
+                              <Insets />
+                          </VBox.margin>
+                          <padding>
+                              <Insets top="4.0" />
+                          </padding>
+                      </Label>
+                    </children>
+                    <padding>
+                        <Insets left="2.0" />
+                    </padding>
+                </VBox>
+            </children>
+        </HBox>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" stroke="#f95959" strokeType="INSIDE" width="2.0" />
+    </children>
+</AnchorPane>

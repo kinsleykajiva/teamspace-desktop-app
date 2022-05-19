@@ -12,6 +12,9 @@
     -fx-border-radius: 10;
 }
 
+
+
+
 /**************************************************
  * Window Header
 **************************************************/
@@ -343,3 +346,65 @@
 .menu-item:focused .label, .menu-item:hovered .label {
     -fx-text-fill: -fx-my-menu-font-color-highlighted;
 }
+
+
+
+
+
+
+/***************************************/
+
+#txtMsgContainar{
+
+     -fx-padding: 2 19;
+     -fx-background-color: transparent, white, transparent,white;
+     -fx-background-insets: 0, 6, 0;
+     -fx-background-radius: 8em;
+    -fx-border-radius: 10;
+    -fx-border-color: #dcdfe8;
+}
+#txtMsg{
+   /* -fx-padding: 0 19;
+    -fx-background-color: transparent, white, transparent,white;
+    -fx-background-insets: 0, 6, 0;
+    -fx-background-radius: 8em;*/
+}
+#txtMsg .scroll-pane{
+    -fx-background-color: transparent;
+}
+#txtMsg .scroll-pane >.viewport , #txtMsg >.viewport{
+    -fx-background-color: transparent;
+}
+
+#txtMsg .scroll-pane .scroll-bar:vertical, #txtMsg .scroll-bar:vertical{
+    -fx-background-color:inherit;
+}
+
+#txtMsg .scroll-pane .scroll-bar:vertical .track{
+    -fx-background-color:transparent;
+    -fx-border-color:transparent;
+    -fx-background-radius: 0em;
+
+}
+#txtMsg .scroll-pane .scroll-bar:vertical .increment-button,
+#txtMsg .scroll-pane .scroll-bar:vertical .decrement-button{
+    -fx-background-color:transparent;
+    -fx-background-radius: 0em;
+    -fx-padding:0 0 10 0;
+
+}
+
+#txtMsg .scroll-pane  .scroll-bar .increment-arrow,
+#txtMsg .scroll-pane  .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding:0;
+}
+#txtMsg .scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color:transparent;
+}
+
+/***************************************/
+/***************************************/
+/***************************************/
+/***************************************/
+/***************************************/
