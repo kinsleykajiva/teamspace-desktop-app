@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" styleClass="blue-panel" stylesheets="@../../styles/login.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox fx:id="HBoxClose" alignment="CENTER_RIGHT">
+         <children>
+            <Label fx:id="txtLoadingMessage" layoutX="374.0" layoutY="17.0" text="Loading Error" textFill="#eb2929" visible="false">
+               <font>
+                  <Font name="Constantia Bold" size="11.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="imgLoadingView" fitHeight="51.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../../images/loading-response.gif" />
+               </image>
+               <HBox.margin>
+                  <Insets right="120.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="txtClose" text="X" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Label text="Login" textFill="#2196f3">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="20.0" />
+         </VBox.margin>
+      </Label>
+      <HBox fx:id="HBoxtxtEmail" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="txtEmail" promptText="Email" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+<!--            <FontAwesomeIconView fill="WHITE" glyphName="USER" size="1.3em" />-->
+         </children>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="15.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox fx:id="HBoxtxtPassword" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="txtPassword" promptText="Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+<!--            <FontAwesomeIconView fill="WHITE" glyphName="LOCK" size="1.3em" />-->
+         </children>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="20.0" />
+         </VBox.margin>
+      </HBox>
+      <Button fx:id="btnSignIn" mnemonicParsing="false" prefHeight="38.0" prefWidth="456.0" styleClass="blue-btn" text="Sign In" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+   <padding>
+      <Insets left="50.0" right="50.0" />
+   </padding>
+</VBox>

@@ -1,0 +1,41 @@
+/* 
+    Created on : Feb 22, 2020, 2:39:34 PM
+    Author     : Admin
+*/
+.parent{
+    -fx-background-color: transparent;
+}
+.pane{
+   /*-fx-background-color: #280159;*/
+    -fx-border-radius: 20;
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #280159, #110025);
+}
+.trans-btn-white-border{
+    -fx-background-color: transparent;
+    -fx-background-radius: 5px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: whitesmoke;
+}
+.white-pane{
+    -fx-background-color: #ffffff;
+}
+.blue-panel{
+    -fx-background-color: #151928;
+}
+.tf_box{
+    -fx-background-color: transparent;
+    -fx-border-color: #DEDEE4;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+.tf{
+    -fx-background-color: transparent;    
+}
+.blue-btn{
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #420c87, #542c87);
+    /*-fx-background-color: #280159;*/
+    -fx-background-radius: 5px;
+    -fx-text-fill: #fffff;
+}
+

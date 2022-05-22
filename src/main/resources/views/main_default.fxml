@@ -17,10 +17,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="rootPane" stylesheets="@../styles/parent.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="team.space.controllers.MainController">
-   <StackPane fx:id="contentPane" layoutX="78.0" layoutY="12.0" prefHeight="706.0" prefWidth="972.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="77.0" AnchorPane.rightAnchor="231.0" AnchorPane.topAnchor="9.0">
-      <children>
-         <fx:include source="include_chat_parent/incl.chat_parent.fxml" />
-      </children></StackPane>
+   <StackPane fx:id="contentPane" layoutX="78.0" layoutY="12.0" prefHeight="706.0" prefWidth="972.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="77.0" AnchorPane.rightAnchor="231.0" AnchorPane.topAnchor="9.0" />
    <StackPane fx:id="contentPaneCalling" layoutX="70.0" layoutY="480.0" prefHeight="233.0" prefWidth="310.0" style="-fx-background-color: #292929; -fx-background-radius: 20 20 20 0;" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="70.0">
       <children>
          <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -71,9 +68,9 @@
                      <Insets right="10.0" />
                   </padding>
                   <children>
-                     <MFXFontIcon fx:id="minimizeIcon1" description="mfx-circle" size="11.0" styleClass="minimize-icon" />
-                     <MFXFontIcon fx:id="closeIcon1" description="mfx-circle" size="11.0" styleClass="close-icon" />
-                     <MFXFontIcon fx:id="maximiseScreenIcon1" description="mfx-circle" layoutX="1213.0" layoutY="42.0" size="11.0" styleClass="maximize-icon" />
+                     <MFXFontIcon fx:id="minimizeIcon" description="mfx-circle" size="11.0" styleClass="minimize-icon" />
+                     <MFXFontIcon fx:id="closeIcon" description="mfx-circle" size="11.0" styleClass="close-icon" />
+                     <MFXFontIcon fx:id="maximiseScreenIcon" description="mfx-circle" layoutX="1213.0" layoutY="42.0" size="11.0" styleClass="maximize-icon" />
                   </children>
                </HBox>
                <ImageView fitHeight="38.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
@@ -105,7 +102,7 @@
                   </padding>
                </VBox>
             </children></VBox>
-         <VBox alignment="TOP_CENTER" layoutY="150.0" prefHeight="389.0" prefWidth="57.0" spacing="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <VBox fx:id="mainNav" alignment="TOP_CENTER" layoutY="150.0" prefHeight="389.0" prefWidth="57.0" spacing="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                <Label graphicTextGap="15.0" style="-fx-text-fill: white;" styleClass="header" text="TS" textFill="WHITE">
                   <font>
@@ -120,33 +117,33 @@
                      <Image url="@../images/menu.png" />
                   </image>
                </ImageView>
-               <ImageView fx:id="imgHome1" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="51.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="imgNavChats" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="51.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../images/conversation.png" />
                   </image>
                </ImageView>
-               <ImageView fx:id="imgHome11" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="85.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="imgNavCalender" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="85.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../images/calendar.png" />
                   </image>
                </ImageView>
-               <ImageView fx:id="imgHome111" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="194.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="imgNavFiles" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="194.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../images/file3.png" />
                   </image>
                </ImageView>
-               <ImageView fx:id="imgHome1111" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="253.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="imgNavSettings" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="253.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../images/settings.png" />
                   </image>
                </ImageView>
-               <ImageView fx:id="imgHome1112" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="253.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="imgNavNotifications" fitHeight="24.0" fitWidth="33.0" layoutX="27.0" layoutY="253.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../images/bell.png" />
                   </image>
                </ImageView>
             </children></VBox>
-         <ImageView fitHeight="30.0" fitWidth="23.0" layoutX="20.0" layoutY="674.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="14.0">
+         <ImageView fx:id="imgNavLogOut" fitHeight="30.0" fitWidth="23.0" layoutX="20.0" layoutY="674.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="14.0">
             <image>
                <Image url="@../images/logout.png" />
             </image>

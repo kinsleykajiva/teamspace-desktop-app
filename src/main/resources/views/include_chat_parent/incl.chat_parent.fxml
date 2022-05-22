@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="692.0" prefWidth="1031.0" stylesheets="@../../styles/parent.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="692.0" prefWidth="1031.0" stylesheets="@../../styles/parent.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="team.space.controllers.includechat.ChatPArentViewController" >
    <children>
       <TabPane prefHeight="692.0" prefWidth="199.0" style="-fx-background-color: #f9f9fc;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
