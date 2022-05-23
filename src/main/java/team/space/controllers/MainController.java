@@ -17,8 +17,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import team.space.controllers.includechat.ChatPArentViewController;
 import team.space.events.ApplicationEvents;
+import team.space.events.MessageEvent;
+import team.space.utils.MediaUtils;
 import team.space.utils.StageManager;
 
 import java.net.URL;
@@ -33,7 +38,7 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML
     public AnchorPane rootPane;
     @FXML
-    public StackPane contentPaneCalling;
+    public StackPane  contentPaneCalling1;
 
     @FXML
     public StackPane contentPane;
@@ -45,11 +50,11 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML
     public MFXFontIcon maximiseScreenIcon;
 
-
+    MediaUtils mediaUtils;
 
     @FXML
     public VBox mainNav;
-    @FXML public ImageView imgHome;
+    @FXML public ImageView imgHome ,imgDropCall1 ,imgRingRingUserIcon1 , imgMic1, imgVideConvert1;
     @FXML public ImageView imgNavChats;
     @FXML public ImageView imgNavCalender;
     @FXML public ImageView imgInBox;
@@ -59,10 +64,30 @@ public class MainController    implements Initializable, ApplicationEvents {
  /*   @FXML public ImageView imgInBox;
     @FXML public ImageView imgInBox;*/
 
+    public MainController() {
+        EventBus.getDefault().register(this);
+    }
+
+
+    // UI updates must run on MainThread
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+
+
+        System.out.println("Received event: " + event.getEventType());
+
+        contentPaneCalling1.setVisible(true);
+        // textField.setText(event.message);
+        mediaUtils.playIncomingCallAlert();
+    }
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initClickListener();
+        mediaUtils = new MediaUtils();
+        contentPaneCalling1.setVisible(false);
         stage = StageManager.getStage();
         for(Node child : mainNav.getChildren()) {
             VBox.setVgrow(child, Priority.ALWAYS);
@@ -112,10 +137,33 @@ public class MainController    implements Initializable, ApplicationEvents {
             contentPane.setCursor(Cursor.DEFAULT);
             stage.setOpacity(1.0f);
         });
+
+
+
         contentPane.setOnMouseDragged(event -> {
             stage.setX(event.getScreenX() - xOffset);
             stage.setY(event.getScreenY() - yOffset);
             stage.setOpacity(0.8f);
+        });
+
+        imgDropCall1.setOnMouseClicked(event -> {
+            System.out.println("dragged");
+            mediaUtils.stopIncomingCallAlert();
+
+            contentPaneCalling1.setVisible(false);
+        });
+
+        imgMic1.setOnMouseClicked(event -> {
+            System.out.println("dragged");
+            mediaUtils.stopIncomingCallAlert();
+
+            contentPaneCalling1.setVisible(false);
+        });
+        imgVideConvert1.setOnMouseClicked(event -> {
+            System.out.println("dragged");
+            mediaUtils.stopIncomingCallAlert();
+
+            contentPaneCalling1.setVisible(false);
         });
 
     }

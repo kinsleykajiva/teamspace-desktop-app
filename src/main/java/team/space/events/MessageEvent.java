@@ -10,6 +10,7 @@ public class MessageEvent extends Event {
     public static final EventType<MessageEvent> MESSAGE_NOT_CONNECTED_TO_SERVER_EVENT = new EventType<>(Event.ANY,"MESSAGE_NOT_CONNECTED_TO_SERVER_EVENT");
     public static final EventType<MessageEvent> MESSAGE_CONNECTED_TO_SERVER_EVENT = new EventType<>(Event.ANY,"MESSAGE_CONNECTED_TO_SERVER_EVENT");
     public static final EventType<MessageEvent> MESSAGE_EVENT_NEW_USER_ALERT = new EventType<>(Event.ANY,"MESSAGE_EVENT_NEW_USER_ALERT");
+    public static final EventType<MessageEvent> MESSAGE_EVENT_MAKE_OUT_GOING_CALL_ALERT = new EventType<>(Event.ANY,"MESSAGE_EVENT_MAKE_OUT_GOING_CALL_ALERT");
 
     String message = "";
 

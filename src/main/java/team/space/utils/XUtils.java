@@ -2,11 +2,13 @@ package team.space.utils;
 
 import javafx.application.Platform;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +25,16 @@ public class XUtils {
     public static String currentTimeStamp(){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT);
         return dtf.format(LocalDateTime.now());
+    }
+
+    public static String longEpochToLocalDateTime(long epoch){
+
+        Date date = new Date(epoch);
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+        String formatted = format.format(date);
+
+        return formatted;
     }
 
     public static Long convertDateStringToLong(String date){

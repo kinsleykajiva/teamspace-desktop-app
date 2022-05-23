@@ -18,47 +18,6 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="rootPane" stylesheets="@../styles/parent.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="team.space.controllers.MainController">
    <StackPane fx:id="contentPane" layoutX="78.0" layoutY="12.0" prefHeight="706.0" prefWidth="972.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="77.0" AnchorPane.rightAnchor="231.0" AnchorPane.topAnchor="9.0" />
-   <StackPane fx:id="contentPaneCalling" layoutX="70.0" layoutY="480.0" prefHeight="233.0" prefWidth="310.0" style="-fx-background-color: #292929; -fx-background-radius: 20 20 20 0;" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="70.0">
-      <children>
-         <AnchorPane prefHeight="200.0" prefWidth="200.0">
-            <children>
-               <Circle fx:id="circle21" fill="#1f93ff00" layoutX="155.0" layoutY="117.0" radius="36.0" stroke="#aad63e" strokeType="INSIDE" strokeWidth="3.0" visible="false" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="119.0" AnchorPane.rightAnchor="121.0" AnchorPane.topAnchor="81.0" />
-               <ImageView fx:id="imgMaxiMin" fitHeight="18.0" fitWidth="19.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../images/apps.png" />
-                  </image>
-               </ImageView>
-               <Circle fx:id="circle2" fill="#1f93ff00" layoutX="155.0" layoutY="117.0" radius="41.0" stroke="#3e71d7" strokeType="INSIDE" strokeWidth="3.0" visible="false" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="115.0" AnchorPane.topAnchor="77.0" />
-               <Label fx:id="txtCaller" alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="40.0" prefHeight="17.0" prefWidth="237.0" text="Bruce Wayne" textAlignment="CENTER" textFill="#f7f7f7" underline="true" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="40.0" />
-               <HBox alignment="CENTER" layoutX="-2.0" layoutY="212.0" prefHeight="46.0" prefWidth="311.0" spacing="25.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0">
-                  <children>
-                     <ImageView fx:id="imgVideConvert" fitHeight="25.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../images/apps.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fx:id="imgMic" fitHeight="25.0" fitWidth="61.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../images/microphone1.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fx:id="imgDropCall" fitHeight="25.0" fitWidth="61.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../images/drop-call.png" />
-                        </image>
-                     </ImageView>
-                  </children>
-               </HBox>
-            </children>
-         </AnchorPane>
-         <ImageView fx:id="imgRingRingUserIcon" fitHeight="42.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../images/phone-call1.png" />
-            </image>
-         </ImageView>
-         <Circle fx:id="circle1" fill="#1f93ff00" radius="40.0" stroke="#3e71d7" strokeType="INSIDE" strokeWidth="3.0" visible="false" />
-      </children>
-   </StackPane>
    <AnchorPane fx:id="navBar" layoutX="5.0" layoutY="10.0" prefHeight="700.0" prefWidth="57.0" style="-fx-background-color: #4849a1; -fx-background-radius: 10 10 10 10;" styleClass="sidebar" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0">
       <children>
          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -292,6 +251,52 @@
          </Line>
       </children>
    </VBox>
+   <StackPane fx:id="contentPaneCalling1" layoutX="70.0" layoutY="480.0" prefHeight="233.0" prefWidth="310.0" style="-fx-background-color: #292929; -fx-background-radius: 20 20 20 0;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="70.0">
+      <children>
+         <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+               <Circle fx:id="circle211" fill="#1f93ff00" layoutX="155.0" layoutY="117.0" radius="36.0" stroke="#aad63e" strokeType="INSIDE" strokeWidth="3.0" visible="false" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="119.0" AnchorPane.rightAnchor="121.0" AnchorPane.topAnchor="81.0" />
+               <ImageView fx:id="imgMaxiMin1" fitHeight="18.0" fitWidth="19.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/full-screen.png" />
+                  </image>
+               </ImageView>
+               <Circle fx:id="circle21" fill="#1f93ff00" layoutX="155.0" layoutY="117.0" radius="41.0" stroke="#3e71d7" strokeType="INSIDE" strokeWidth="3.0" visible="false" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="115.0" AnchorPane.topAnchor="77.0" />
+               <Label fx:id="txtCaller1" alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="40.0" prefHeight="17.0" prefWidth="237.0" text="Caller Name" textAlignment="CENTER" textFill="#f7f7f7" underline="true" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="40.0" />
+               <ImageView fx:id="imgRingRingUserIcon11" fitHeight="42.0" fitWidth="31.0" layoutX="140.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/infinity-loading.gif" />
+                  </image>
+               </ImageView>
+               <HBox alignment="CENTER" layoutX="-2.0" layoutY="212.0" prefHeight="46.0" prefWidth="311.0" spacing="25.0" style="-fx-background-color: #4548a0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0">
+                  <children>
+                     <ImageView fx:id="imgVideConvert1" fitHeight="25.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../images/video-camera3.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="imgMic1" fitHeight="25.0" fitWidth="61.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../images/microphone.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="imgDropCall1" fitHeight="25.0" fitWidth="61.0" layoutX="35.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../images/drop-call.png" />
+                        </image>
+                     </ImageView>
+                  </children>
+               </HBox>
+            </children>
+         </AnchorPane>
+         <ImageView fx:id="imgRingRingUserIcon1" fitHeight="42.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/call3.png" />
+            </image>
+         </ImageView>
+         <Circle fx:id="circle11" fill="#1f93ff00" radius="40.0" stroke="#3e71d7" strokeType="INSIDE" strokeWidth="3.0" visible="false" />
+      </children>
+   </StackPane>
 
 
 </AnchorPane>

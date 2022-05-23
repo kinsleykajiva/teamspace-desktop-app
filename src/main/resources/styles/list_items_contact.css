@@ -1,0 +1,12 @@
+
+#rootAncherPane_user_custome_cell:hover{
+    -fx-background-color: rgba(197, 197, 199, 0.25);
+}
+
+
+#rootAncherPane_user_custome_cell{
+    -fx-background-color:  #f9f9fc;
+}
+
+
+

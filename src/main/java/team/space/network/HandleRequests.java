@@ -50,9 +50,11 @@ public class HandleRequests {
             request = request.newBuilder()
                     .addHeader("Accept", "application/json")
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("Authorization", "Bearer " + LOGGED_USER.getAccessToken())
+                   // .addHeader("Authorization", "Bearer " + LOGGED_USER.getAccessToken())
+                    .addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYWppdmFraW5zbGV5QGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6IjhmNDIzMDJkLWMwZWUtNGY2Yy04OGQ2LWQwNjg1YWFhYTg4YSIsInJvbGUiOjEsImlzcyI6Ii9hdXRoL2FwaS92MS91c2Vycy9sb2dpbiIsImZ1bGxOYW1lIjoiS3VtYmlyYWkiLCJleHAiOjE2NTM1MTM1NzIsInVzZXJJZCI6MH0.7QmFYPCbfI6gh7kXmYA63yi4Yffn5i1zC2_3NA215Sk" )
 
                     .build();
+            System.out.println("Request: " + LOGGED_USER.getAccessToken().toString());
 
             return chain.proceed(request);
         };

@@ -85,7 +85,7 @@ public class DBManager {
         } catch (final SQLException ex) {
             System.err.println("Error connecting to database: " + ex.getMessage());
         }
-        return cache;
+        return cache.getCompanyId() != null ? cache : null;
     }
 
 

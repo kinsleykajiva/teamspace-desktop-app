@@ -147,7 +147,7 @@ public class LoginInController implements Initializable {
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         // set application icon
         primaryStage.setResizable(true);
-          primaryStage.getIcons().add(new Image(clazzz.getResourceAsStream("/images/icon.png")));
+          primaryStage.getIcons().add(new Image(clazzz.getResourceAsStream("/images/group-chat.png")));
        // primaryStage.getIcons().addAll(loadIcons("icon-16.png", "icon-24.png", "icon-32.png", "icon-64.png", "icon-128.png", "icon-256.png", "icon-512.png"));
         // set first screen
         Shared.screen = Screen.MAIN_SCREEN;

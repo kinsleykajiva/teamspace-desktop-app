@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+
+<HBox fx:id="MAIN_MSG" spacing="5.0" style="-fx-background-radius: 10;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+            <Label fx:id="userNameText" maxHeight="1600.0" maxWidth="700.0" minHeight="-Infinity" prefHeight="79.0" prefWidth="189.0" text="if you are going to  if you are going to u if you are going to use page if you are going to use page if you are  if you are going to u if you are going to use page if you are going to use page if you are going to use pagese page going to use pagese page u if you are going to use page if you are going to use page if you are going   if you are going to  if you are going to u if you are going to use page if you are going to use page if you are  if you are going to u if you are going to use page if you are going to use page if you are going to use pagese page going to use pagese page u if you are going to use page if you are going to use page if you are going to use pagese page to use pagese page" textAlignment="CENTER" textFill="#35373c" wrapText="true">
+                <font>
+                    <Font name="Segoe UI Bold" size="10.0" />
+                </font>
+            </Label>
+   </children>
+</HBox>

@@ -65,7 +65,6 @@ public class ReqLogin {
             OkHttpClient client = getHttpClient();
             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toString());
 
-
             System.out.println("Request Body: " + API_BASE_URL + "/auth/api/v1/users/login");
 
 
@@ -82,7 +81,7 @@ public class ReqLogin {
                 e.printStackTrace();
             }
 
-            System.out.println("res: " + res);
+            System.out.println("111res: " + res);
             ObjectMapper om = new ObjectMapper();
 
             LoginRoot root = om.readValue(res, LoginRoot.class);
@@ -98,6 +97,8 @@ public class ReqLogin {
                 user.setProfileImage(root.getData().getProfileImage());
                 user.setFullName(root.getData().getFullName());
                 user.setEmail(root.getData().getEmail());
+                user.setRole(root.getData().getRole());
+                user.setCompanyId(root.getData().getCompanyId());
                 user.setUserId(root.getData().getUserId());
                 user.setAccessToken(root.getData().getToken().getAccessToken());
 

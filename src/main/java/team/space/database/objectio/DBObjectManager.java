@@ -14,15 +14,9 @@ public class DBObjectManager {
 
 
     private DBObjectManager() {
-        File tempFile = null;
-        try {
-            tempFile = File.createTempFile("objectdb", "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        tempFile.delete();
+
          store = MyObjectBox.builder()
-                .directory(tempFile)
+                 .name("objectbox-db")
                 .debugFlags(DebugFlags.LOG_QUERIES | DebugFlags.LOG_QUERY_PARAMETERS)
                 .build();
     }

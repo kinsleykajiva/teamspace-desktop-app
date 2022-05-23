@@ -9,11 +9,14 @@ import io.github.palexdev.materialfx.controls.MFXNotificationCenter;
 import io.github.palexdev.materialfx.controls.cell.MFXNotificationCell;
 import io.github.palexdev.materialfx.notifications.MFXNotificationCenterSystem;
 import io.github.palexdev.materialfx.notifications.MFXNotificationSystem;
+import io.objectbox.Box;
+import io.objectbox.query.Query;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -21,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import team.space.database.objectio.DBObjectManager;
+import team.space.database.objectio.LoginInCache;
 import team.space.database.sqlite.DBManager;
 import team.space.events.MessageEvent;
 import team.space.utils.Shared;
@@ -59,44 +63,23 @@ public class BaseApplication extends Application {
         sqlAccess = new DBManager();
         EventBus.getDefault().register(this);
 
-        var t = new Thread(() -> {
-
-            ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("13.246.49.140");
-            factory.setPassword("test");
-            factory.setUsername("test");
-            factory.setPort(5672);
-
-            Connection connection = null;
-            try {
-                connection = factory.newConnection();
-
-                Channel channel = connection.createChannel();
-
-                channel.queueDeclare(QUEUE_ON_USER_SAVED, false, false, false, null);
-                System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
-
-                DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                    String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                    System.out.println(" [x] Received '" + message + "'");
-                };
-                channel.basicConsume(QUEUE_ON_USER_SAVED, true, deliverCallback, consumerTag -> {
-                    System.out.println(" [x] Received 222");
-
-                });
 
 
-            } catch (IOException | TimeoutException e) {
-                e.printStackTrace();
-            }
-        });
-       /* t.start();
-        getAllUsers();*/
+        Box<LoginInCache> loginInCacheBox = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
+        Query<LoginInCache> checkExistsquery1 = loginInCacheBox.query().build();
+
+        if (checkExistsquery1.find().size() > 0) {
+            System.out.println("LoginInCache exists --- "  + checkExistsquery1.findFirst());
+           // return checkExistsquery1.find().get(0);
+        }else{
+            System.out.println("LoginInCache not exists");
+           // return null;
+        }
 
 
         Shared.LOGGED_USER = DBManager.getinstance().getCachedUser();
 
-
+        System.out.println("LoginInCache not exists" +  Shared.LOGGED_USER);
         if (Shared.LOGGED_USER == null) {
             // ask the user to login
 
@@ -106,6 +89,7 @@ public class BaseApplication extends Application {
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/group-chat.png")));
             stage.initStyle(StageStyle.TRANSPARENT);
             stage.show();
         } else {
