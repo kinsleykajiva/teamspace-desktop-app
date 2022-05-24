@@ -7,17 +7,17 @@ import io.objectbox.annotation.Id;
 public class UserPojo {
 
     @Id
-    long id;
-    String email;
-    String password;
-    String fullName;
-    String profilePictureUrl;
-    boolean isActive;
-    boolean isIsVerified;
-    String companyClientId;
-    String createdAt;
+    public   long id ;
+    public  String email;
+    public  String password;
+    public  String fullName;
+    public  String profilePictureUrl;
+    public  boolean isActive ;
+    public  boolean isIsVerified;
+    public  String companyClientId;
+    public  String createdAt;
 
-    String id_;
+  public  String id_;
 
     public String getId_() {
         return id_;

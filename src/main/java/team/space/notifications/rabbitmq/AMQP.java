@@ -14,10 +14,11 @@ import java.util.concurrent.TimeoutException;
 import static team.space.utils.Constants.QUEUE_ON_USER_SAVED;
 
 public class AMQP {
+
+   public  static Set<Thread> threads  = new HashSet<>();
     ConnectionFactory factory = new ConnectionFactory();
     Connection connection;
-    Channel channel;
-   public  static Set<Thread> threads  = new HashSet<>();
+    Channel channel = null;
 
     public AMQP() {
         factory.setHost("13.246.49.140");
@@ -34,23 +35,30 @@ public class AMQP {
             e.printStackTrace();
         }
     }
-
+//onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027__to_fb875efe-603d-4065-8e7f-2bbdaa424027
+//onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027
 
     public void setToListenToCapture(final String queueName) {
         var chck = threads.stream().anyMatch(th-> th.getName().equals(queueName));
         if(chck)
         {
-            System.out.println("already listening to queue");
+            System.out.println("already listening to queue :: " + queueName);
             return;
         }
         var t = new Thread( () -> {
             try {
+
+
+
+
+
                 channel.queueDeclare(queueName, false, false, false, null);
                 DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                     String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                    System.out.println(" [x] Received '" + message + "'");
+                    System.out
+                            .println(" [x] Received '" + message + "'");
                 };
-                channel.basicConsume(QUEUE_ON_USER_SAVED, true, deliverCallback, consumerTag -> {
+                channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
                     System.out.println(" [x] Received 222");
 
                 });

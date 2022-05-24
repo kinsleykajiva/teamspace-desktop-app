@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import team.space.controllers.includechat.ChatPArentViewController;
 import team.space.events.ApplicationEvents;
 import team.space.events.MessageEvent;
+import team.space.models.Contact;
 import team.space.utils.MediaUtils;
 import team.space.utils.StageManager;
 
@@ -50,7 +52,7 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML
     public MFXFontIcon maximiseScreenIcon;
 
-    MediaUtils mediaUtils;
+   private MediaUtils mediaUtils;
 
     @FXML
     public VBox mainNav;
@@ -61,8 +63,10 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML public ImageView imgNavSettings;
     @FXML public ImageView imgNavNotifications;
     @FXML public ImageView imgNavLogOut;
+    @FXML public Label txtCaller1;
  /*   @FXML public ImageView imgInBox;
     @FXML public ImageView imgInBox;*/
+    private Contact contactInCurrentView;
 
     public MainController() {
         EventBus.getDefault().register(this);
@@ -76,9 +80,16 @@ public class MainController    implements Initializable, ApplicationEvents {
 
         System.out.println("Received event: " + event.getEventType());
 
-        contentPaneCalling1.setVisible(true);
-        // textField.setText(event.message);
-        mediaUtils.playIncomingCallAlert();
+        if( event.getEventType().equals(MessageEvent.MESSAGE_EVENT_MAKE_OUT_GOING_CALL_ALERT) ){
+           if( event.getObject() instanceof Contact){
+               contentPaneCalling1.setVisible(true);
+               // textField.setText(event.message);
+               mediaUtils.playIncomingCallAlert();
+               txtCaller1.setText( ((Contact) event.getObject()).getFullName() );
+           }
+
+        }
+
     }
 
 
@@ -92,7 +103,7 @@ public class MainController    implements Initializable, ApplicationEvents {
         for(Node child : mainNav.getChildren()) {
             VBox.setVgrow(child, Priority.ALWAYS);
         }
-
+        final int[] loadedCounter = {0};
         MFXLoader loader = new MFXLoader();
         loader.addView(MFXLoaderBean.of("MESSAGE_CONTROLLER", loadURL("/views/include_chat_parent/incl.chat_parent.fxml")).setControllerFactory(c->new ChatPArentViewController(stage,this)).setDefaultRoot(false).get());
         loader.addView(MFXLoaderBean.of("HOME_CONTROLLER", loadURL("/views/homecontroller.fxml")).setControllerFactory(c->new HomeController(stage,this)).setDefaultRoot(true).get());
@@ -109,9 +120,18 @@ public class MainController    implements Initializable, ApplicationEvents {
             if (bean.isDefaultView()) {
                 contentPane.getChildren().setAll(bean.getRoot());
             }
+            loadedCounter[0]++;
+            if(loadedCounter[0] == beans.size()) {
+                System.out.println("Views are  ready " );
+                mediaUtils.playWelcomeAlert();
+            }
+           // System.out.println("Loaded view: Done - " +loadedCounter[0] );
+
         }));
 
         loader.start();
+// mediaUtils
+
 
     }
 

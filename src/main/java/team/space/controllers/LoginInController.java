@@ -28,7 +28,7 @@ import lombok.SneakyThrows;
 import team.space.database.objectio.DBObjectManager;
 import team.space.database.objectio.LoginInCache;
 import team.space.database.objectio.LoginInCache_;
-import team.space.database.objectio.MyObjectBox;
+
 import team.space.requests.resigster.RegisterRoot;
 import team.space.utils.Screen;
 import team.space.utils.Shared;

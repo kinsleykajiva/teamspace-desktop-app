@@ -31,6 +31,9 @@ public class ContactchatItem {
             throw new RuntimeException(e);
         }
        this. contact = contact;
+        userNameText.setText(/*contact.getFullName()*/ "Last chatMessage Shown Here");
+        userNameLabel.setText(contact.getFullName());
+        nombreMessageLabel.setText(/*contact.getFullName()*/"1");
     }
 
 

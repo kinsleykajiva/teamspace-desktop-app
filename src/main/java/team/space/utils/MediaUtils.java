@@ -9,6 +9,7 @@ public class MediaUtils {
 
 private MediaPlayer mediaPlayerIncomingCall ;
 private MediaPlayer mediaPlayerAlert ;
+private MediaPlayer mediaWelcomAlert ;
 
     public  void stopNotificationsAlert() {
         if(mediaPlayerAlert != null) {
@@ -29,6 +30,15 @@ private MediaPlayer mediaPlayerAlert ;
             mediaPlayerAlert.setVolume(1);
             mediaPlayerAlert.setCycleCount(1);
             mediaPlayerAlert.play();
+        });
+    }
+    public  void playWelcomeAlert() {
+        Platform.runLater(() -> {
+            Media sound = new Media(getClass().getResource("/sounds/welcome.mp3").toExternalForm());
+            mediaWelcomAlert = new MediaPlayer(sound);
+            mediaWelcomAlert.setVolume(1);
+            mediaWelcomAlert.setCycleCount(1);
+            mediaWelcomAlert.play();
         });
     }
     public  void playIncomingCallAlert() {
