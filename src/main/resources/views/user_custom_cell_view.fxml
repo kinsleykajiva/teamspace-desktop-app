@@ -72,6 +72,6 @@
             </StackPane>
          </children>
       </VBox>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" stroke="#f95959" strokeType="INSIDE" width="2.0" />
+      <Rectangle fx:id="rectangleCurrentSelect" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="45.0" stroke="#f95959" strokeType="INSIDE" width="2.0" />
    </children>
 </AnchorPane>

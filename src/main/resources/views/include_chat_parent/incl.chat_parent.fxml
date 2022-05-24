@@ -22,6 +22,16 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: red;">
                      <children>
                         <VBox fx:id="MAIN_CONTACTS" prefHeight="659.0" prefWidth="199.0" spacing="1.0" style="-fx-background-color: #f9f9fc;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <HBox fx:id="loadingMotion" alignment="CENTER" prefHeight="32.0" prefWidth="199.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fitHeight="41.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/loading-response.gif" />
+                                 </image>
+                              </ImageView>
+                              <Label text="Loading..." />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
             </content>

@@ -23,6 +23,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -59,17 +60,21 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
     @FXML
     public ImageView SEND_BTN;
     @FXML
-    public AnchorPane parentParentRootPane;
+    public HBox loadingMotion;
+    @FXML
+    public AnchorPane parentParentRootPane , chatPane;
     @FXML
     public TextArea txtMsg;
     @FXML
     public Label txtInChatTitleNamePerson, txtInChatTitleSubNamePerson;
     private Contact contactInCurrentView;
+    private ContactchatItem ContactchatItemView;
     private MFXGenericDialog dialogContent;
     private MFXStageDialog dialog;
     private AMQP amqp = new AMQP();
     private Stage stage;
     private ApplicationEvents applicationEvents;
+    private ObservableList<ContactchatItem> ContactchatItemList = FXCollections.observableArrayList();
 
     public ChatPArentViewController(Stage stage, ApplicationEvents applicationEvents) {
         this.stage = stage;
@@ -211,6 +216,8 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             initDialogs();
 
         });
+        loadingMotion.setVisible(true);
+        chatPane.setVisible(false);
        /* var meg = new Message(LOGGED_USER.getUserId(), "r", "dsasvcx sdfsdfsdf sdf sdfdf sd fsd fa asdasd asdsa", XUtils.currentTimeStamp().split(" ")[0]);
 
         SR.senderMessage(meg, MSGS_CONTAINER);
@@ -236,6 +243,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         };
 
         getContacts.setOnSucceeded(event -> {
+            loadingMotion.setVisible(false);
             ObservableList<Contact> contacts = getContacts.getValue();
             System.out.println(contacts);
             contactObservableArrayList.addAll(contacts);
@@ -243,8 +251,17 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             contactObservableArrayList.forEach(contact -> {
                 //   System.out.println(contact.getName());
                 ContactchatItem item = new ContactchatItem(contact);
+                ContactchatItemList.add(item);
                 item.getRootAncherPane_user_custome_cell().setOnMouseClicked(e -> {
-                    System.out.println("Clicked");
+                  //  item.rectangleCurrentSelect.setVisible(false);
+                    ContactchatItemList.forEach(contactchatItem -> {
+                        if (contactchatItem != item) {
+                            contactchatItem.rectangleCurrentSelect.setVisible(false);
+                        }else{
+                            contactchatItem.rectangleCurrentSelect.setVisible(true);
+                        }
+                    });
+                    ContactchatItemView = item;
                     setContactInChatView(contact);
                 });
                 MAIN_CONTACTS.getChildren().add(item.getRootAncherPane_user_custome_cell());
@@ -253,11 +270,13 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         });
 
         getContacts.setOnFailed(event -> {
+            loadingMotion.setVisible(false);
             getContacts.getException().printStackTrace();
             System.err.println("Failed" + getContacts.getException());
         });
 
         getContacts.setOnCancelled(event -> {
+            loadingMotion.setVisible(false);
             System.err.println("Cancelled");
         });
 
@@ -341,6 +360,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             chats.setChatHistory(new ArrayList<Message>());
             historyMutableMap.put(contact, chats);
         }
+       // ContactchatItemView.rectangleCurrentSelect.setVisible(true);
         MSGS_CONTAINER.getChildren().clear();
         this.contactInCurrentView = contact;
         txtInChatTitleNamePerson.setText(contact.getFullName());
@@ -374,6 +394,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
             }
         }
+        chatPane.setVisible(true);
     }
 //onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027
 //onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027

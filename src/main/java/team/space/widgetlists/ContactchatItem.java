@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import team.space.models.Contact;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class ContactchatItem {
     @FXML  public AnchorPane rootAncherPane_user_custome_cell;
     @FXML  public ImageView avatarImageView;
     @FXML  public Circle circleNumberCount;
+    @FXML  public Rectangle rectangleCurrentSelect;
 
 
 
@@ -30,6 +32,7 @@ public class ContactchatItem {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        rectangleCurrentSelect.setVisible(false);
        this. contact = contact;
         userNameText.setText(/*contact.getFullName()*/ "Last chatMessage Shown Here");
         userNameLabel.setText(contact.getFullName());
