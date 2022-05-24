@@ -67,7 +67,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
     private Contact contactInCurrentView;
     private MFXGenericDialog dialogContent;
     private MFXStageDialog dialog;
-   private AMQP amqp = new AMQP();
+    private AMQP amqp = new AMQP();
     private Stage stage;
     private ApplicationEvents applicationEvents;
 
@@ -211,7 +211,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             initDialogs();
 
         });
-        var meg = new Message(LOGGED_USER.getUserId(), "r", "dsasvcx sdfsdfsdf sdf sdfdf sd fsd fa asdasd asdsa", XUtils.currentTimeStamp().split(" ")[0]);
+       /* var meg = new Message(LOGGED_USER.getUserId(), "r", "dsasvcx sdfsdfsdf sdf sdfdf sd fsd fa asdasd asdsa", XUtils.currentTimeStamp().split(" ")[0]);
 
         SR.senderMessage(meg, MSGS_CONTAINER);
         SR.receiveMessage(meg, MSGS_CONTAINER);
@@ -222,7 +222,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         SR.receiveMessage(meg, MSGS_CONTAINER);
         SR.receiveMessage(meg, MSGS_CONTAINER);
         SR.receiveMessage(meg, MSGS_CONTAINER);
-        SR.senderMessage(meg, MSGS_CONTAINER);
+        SR.senderMessage(meg, MSGS_CONTAINER);*/
 
 
         txtMsg.setText("");
@@ -265,7 +265,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
 
         txtMsg.textProperty().addListener((obs, old, niu) -> {
-          //  System.out.println("Typing ...." + niu);
+            //  System.out.println("Typing ...." + niu);
 
             // t.cancel()//;
 
@@ -291,7 +291,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
 
         amqp.setToListenToCapture("QUEUE_onUserSaved");
-       // amqp.setToListenToCapture("onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027");
+        // amqp.setToListenToCapture("onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027");
 
         /*var t = new Thread( () -> {
             try {
@@ -334,7 +334,6 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
     // Timer t = new Timer();
 
 
-
     void setContactInChatView(Contact contact) {
 
         if (historyMutableMap.get(contact) == null) {
@@ -342,8 +341,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             chats.setChatHistory(new ArrayList<Message>());
             historyMutableMap.put(contact, chats);
         }
-
-
+        MSGS_CONTAINER.getChildren().clear();
         this.contactInCurrentView = contact;
         txtInChatTitleNamePerson.setText(contact.getFullName());
         txtInChatTitleSubNamePerson.setText(contact.getEmail());
@@ -356,12 +354,13 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
                 chats.forEach(chat -> {
                     System.out.println("row: " + chat.getMessage());
                     chatsListOb.add(chat);
-                    if(chat.getSender() .equals(LOGGED_USER.getUserId()) ) {
+
+                    if (chat.getSender().equals(LOGGED_USER.getUserId())) {
                         // this me
                         var meg = new Message(LOGGED_USER.getFullName(), chat.getReceiver(), chat.getMessage(), XUtils.currentTimeStamp().split(" ")[0]);
 
                         SR.senderMessage(meg, MSGS_CONTAINER);
-                    }else{
+                    } else {
                         // other
                         var meg = new Message(contact.getFullName(), chat.getSender(), chat.getMessage(), XUtils.currentTimeStamp().split(" ")[0]);
 
@@ -369,8 +368,8 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
                     }
 
                 });
-              //  chatPane.setItems(chatsListOb);
-             //   chatPane.setCellFactory((Callback<ListView<Message>, ListCell<Message>>) listView -> new ChatListCell());
+                //  chatPane.setItems(chatsListOb);
+                //   chatPane.setCellFactory((Callback<ListView<Message>, ListCell<Message>>) listView -> new ChatListCell());
 
 
             }
