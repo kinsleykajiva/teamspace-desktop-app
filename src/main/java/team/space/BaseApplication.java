@@ -87,10 +87,10 @@ public class BaseApplication extends Application {
 
             Parent root = FXMLLoader.load(getClass().getResource("/views/login/Main.fxml"));
             Scene scene = new Scene(root);
+            stage.initStyle(StageStyle.TRANSPARENT);
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/group-chat.png")));
-            stage.initStyle(StageStyle.TRANSPARENT);
             stage.show();
         } else {
             //   show them the home page

@@ -3,6 +3,7 @@ package team.space.utils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,7 +20,9 @@ public class StageManager {
         this.stage = stage;
         try {
             Parent root = FXMLLoader.load(StageManager.class.getResource(ScreenController.getScreen(Shared.screen)));
-            stage.setScene(new Scene(root));
+            var scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
             ResizeHelper.addResizeListener(stage);
             stage.centerOnScreen();
             /*root.setOnMousePressed(event -> {

@@ -68,7 +68,6 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
     @FXML
     public Label txtInChatTitleNamePerson, txtInChatTitleSubNamePerson;
     private Contact contactInCurrentView;
-    private ContactchatItem ContactchatItemView;
     private MFXGenericDialog dialogContent;
     private MFXStageDialog dialog;
     private AMQP amqp = new AMQP();
@@ -99,11 +98,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
                 .setScrimPriority(ScrimPriority.WINDOW)
                 .setScrimOwner(true)
                 .get();
-       /* dialogContent.addActions(
-                Map.entry(new MFXButton("Confirm"), event -> {
-                }),
-                Map.entry(new MFXButton("Cancel"), event -> dialog.close())
-        );*/
+
         dialogContent.setMaxSize(100, 100);
     }
 
@@ -186,7 +181,9 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
     }
 
     public void onSendMessageEvent() {
-        System.out.println("Send message");
+        if(contactInCurrentView == null){
+            return;
+        }
 
         ArrayList<Message> messages = new ArrayList<>();
         var meg = new Message(LOGGED_USER.getUserId(), contactInCurrentView.getId(), txtMsg.getText(), XUtils.currentTimeStamp());
@@ -211,11 +208,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater(() -> {
-
-            initDialogs();
-
-        });
+        Platform.runLater(this::initDialogs);
         loadingMotion.setVisible(true);
         chatPane.setVisible(false);
        /* var meg = new Message(LOGGED_USER.getUserId(), "r", "dsasvcx sdfsdfsdf sdf sdfdf sd fsd fa asdasd asdsa", XUtils.currentTimeStamp().split(" ")[0]);
@@ -234,7 +227,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
         txtMsg.setText("");
 
-        Task<ObservableList<Contact>> getContacts = new Task<ObservableList<Contact>>() {
+        Task<ObservableList<Contact>> getContacts = new Task<>() {
             @Override
             protected ObservableList<Contact> call() throws Exception {
                 contactObservableArrayList.clear();
@@ -247,7 +240,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             ObservableList<Contact> contacts = getContacts.getValue();
             System.out.println(contacts);
             contactObservableArrayList.addAll(contacts);
-
+            ContactchatItemList.clear();
             contactObservableArrayList.forEach(contact -> {
                 //   System.out.println(contact.getName());
                 ContactchatItem item = new ContactchatItem(contact);
@@ -261,7 +254,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
                             contactchatItem.rectangleCurrentSelect.setVisible(true);
                         }
                     });
-                    ContactchatItemView = item;
+
                     setContactInChatView(contact);
                 });
                 MAIN_CONTACTS.getChildren().add(item.getRootAncherPane_user_custome_cell());
@@ -310,44 +303,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
 
         amqp.setToListenToCapture("QUEUE_onUserSaved");
-        // amqp.setToListenToCapture("onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027");
 
-        /*var t = new Thread( () -> {
-            try {
-                ConnectionFactory factory = new ConnectionFactory();
-                Connection connection;
-                Channel channel = null;
-
-                factory.setHost("13.246.49.140");
-                factory.setPassword("test");
-                factory.setUsername("test");
-                factory.setPort(5672);
-
-                try {
-                    connection = factory.newConnection();
-                    channel = connection.createChannel();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (TimeoutException e) {
-                    e.printStackTrace();
-                }
-
-                channel.queueDeclare("_to_fb875efe-603d-4065-8e7f-2bbdaa424027", false, false, false, null);
-                DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                    String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                    System.out
-                            .println(" [x] Received '" + message + "'");
-                };
-                channel.basicConsume("_to_fb875efe-603d-4065-8e7f-2bbdaa424027", true, deliverCallback, consumerTag -> {
-                    System.out.println(" [x] Received 222");
-
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        t.start();*/
 
     }
     // Timer t = new Timer();
@@ -360,7 +316,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             chats.setChatHistory(new ArrayList<Message>());
             historyMutableMap.put(contact, chats);
         }
-       // ContactchatItemView.rectangleCurrentSelect.setVisible(true);
+
         MSGS_CONTAINER.getChildren().clear();
         this.contactInCurrentView = contact;
         txtInChatTitleNamePerson.setText(contact.getFullName());
@@ -388,14 +344,8 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
                     }
 
                 });
-                //  chatPane.setItems(chatsListOb);
-                //   chatPane.setCellFactory((Callback<ListView<Message>, ListCell<Message>>) listView -> new ChatListCell());
-
-
             }
         }
         chatPane.setVisible(true);
     }
-//onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027
-//onMessageSaved_fb875efe-603d-4065-8e7f-2bbdaa424027_to_fb875efe-603d-4065-8e7f-2bbdaa424027
 }

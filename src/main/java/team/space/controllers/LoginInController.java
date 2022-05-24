@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -145,6 +146,8 @@ public class LoginInController implements Initializable {
         // set available languages
         //scene.setFill(Color.TRANSPARENT);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
+
+
         // set application icon
         primaryStage.setResizable(true);
           primaryStage.getIcons().add(new Image(clazzz.getResourceAsStream("/images/group-chat.png")));

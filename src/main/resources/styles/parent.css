@@ -6,7 +6,7 @@
  * Root
 **************************************************/
 .rootPane {
-    -fx-background-color: transparent;
+    -fx-background-color: #ffffff;
     -fx-background-radius: 10;
     -fx-border-color: c1c1c1;
     -fx-border-radius: 10;
