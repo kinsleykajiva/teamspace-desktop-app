@@ -3,6 +3,7 @@ package team.space.controllers;
 import io.github.palexdev.materialfx.font.MFXFontIcon;
 import io.github.palexdev.materialfx.utils.others.loader.MFXLoader;
 import io.github.palexdev.materialfx.utils.others.loader.MFXLoaderBean;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.event.Event;
@@ -18,6 +19,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -86,6 +88,13 @@ public class MainController    implements Initializable, ApplicationEvents {
                // textField.setText(event.message);
                mediaUtils.playIncomingCallAlert();
                txtCaller1.setText( ((Contact) event.getObject()).getFullName() );
+
+               FadeTransition ft = new FadeTransition();
+               ft.setDuration(Duration.millis(200));
+               ft.setNode(contentPaneCalling1);
+               ft.setFromValue(0);
+               ft.setToValue(1);
+               ft.play();
            }
 
         }
@@ -184,6 +193,15 @@ public class MainController    implements Initializable, ApplicationEvents {
             mediaUtils.stopIncomingCallAlert();
 
             contentPaneCalling1.setVisible(false);
+
+
+
+            FadeTransition ft = new FadeTransition();
+            ft.setDuration(Duration.millis(200));
+            ft.setNode(contentPaneCalling1);
+            ft.setFromValue(1);
+            ft.setToValue(0);
+            ft.play();
         });
 
     }
