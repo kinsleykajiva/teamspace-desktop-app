@@ -126,6 +126,17 @@
         </dependency>
 
         <dependency>
+            <groupId>com.dustinredmond.fxtrayicon</groupId>
+            <artifactId>FXTrayIcon</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.calendarfx</groupId>
+            <artifactId>view</artifactId>
+            <version>11.10.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.Gleidson28</groupId>
             <artifactId>GNAvatarView</artifactId>
             <version>1.0.5</version>

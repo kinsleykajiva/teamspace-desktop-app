@@ -1,6 +1,7 @@
 package team.space;
 
 
+import com.dustinredmond.fxtrayicon.FXTrayIcon;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -78,7 +79,9 @@ public class BaseApplication extends Application {
 
 
         Shared.LOGGED_USER = DBManager.getinstance().getCachedUser();
-
+// Pass in the app's main stage, and path to the icon image
+        FXTrayIcon icon = new FXTrayIcon(stage, getClass().getResource("/images/group-chat.png"));
+        icon.show();
         System.out.println("LoginInCache not exists" +  Shared.LOGGED_USER);
         if (Shared.LOGGED_USER == null) {
             // ask the user to login

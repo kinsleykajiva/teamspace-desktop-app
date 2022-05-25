@@ -63,6 +63,14 @@
 	font-display: swap;
 	src: url('../fonts/OpenSans/OpenSans-Bold.ttf') format('truetype');
 }
+@font-face {
+	font-family: 'OpenSansEmoji';
+	src: url('../fonts/OpenSans/OpenSansEmoji.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'emojiFont';
+	src: url('../fonts/emoji.ttf') format('truetype');
+}
 
 @font-face {
 	font-family: 'Open Sans BoldItalic';

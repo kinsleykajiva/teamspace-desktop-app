@@ -1,9 +1,11 @@
 package team.space.controllers.includechat;
 
+import animatefx.animation.*;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import com.vdurmont.emoji.EmojiParser;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
@@ -68,12 +70,11 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
     private TabPane tabPane;
     @FXML
     private TextField txtSearch;
+
     @FXML
-    private ComboBox<Image> boxTone;
+    public VBox MAIN_CONTACTS, MSGS_CONTAINER   ,emojiFrameVBox;
     @FXML
-    public VBox MAIN_CONTACTS, MSGS_CONTAINER;
-    @FXML
-    public ImageView SEND_BTN;
+    public ImageView SEND_BTN , emojiBtn;
     @FXML
     public HBox loadingMotion;
     @FXML
@@ -121,20 +122,20 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         if(!SHOW_MISC) {
             tabPane.getTabs().remove(tabPane.getTabs().size()-2, tabPane.getTabs().size());
         }
-        ObservableList<Image> tonesList = FXCollections.observableArrayList();
+//        ObservableList<Image> tonesList = FXCollections.observableArrayList();
 
-        for(int i = 1; i <= 5; i++) {
+       /* for(int i = 1; i <= 5; i++) {
             Emoji emoji = EmojiOne.getInstance().getEmoji(":thumbsup_tone"+i+":");
             Image image = ImageCache.getInstance().getImage(getEmojiImagePath(emoji.getHex()));
             tonesList.add(image);
-        }
+        }*/
         Emoji em = EmojiOne.getInstance().getEmoji(":thumbsup:"); //default tone
         Image image = ImageCache.getInstance().getImage(getEmojiImagePath(em.getHex()));
-        tonesList.add(image);
+       /* tonesList.add(image);
         boxTone.setItems(tonesList);
         boxTone.setCellFactory(e->new ToneCell());
         boxTone.setButtonCell(new ToneCell());
-        boxTone.getSelectionModel().selectedItemProperty().addListener(e->refreshTabs());
+        boxTone.getSelectionModel().selectedItemProperty().addListener(e->refreshTabs());*/
 
 
         searchScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -144,11 +145,13 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
         txtSearch.textProperty().addListener(x-> {
             String text = txtSearch.getText();
-            if(text.isEmpty() || text.length() < 2) {
+            if(text.isEmpty() || text.length() < 1) {
                 searchFlowPane.getChildren().clear();
                 searchScrollPane.setVisible(false);
+                tabPane.setVisible(true);
             } else {
                 searchScrollPane.setVisible(true);
+                tabPane.setVisible(false);
                 List<Emoji> results = EmojiOne.getInstance().search(text);
                 searchFlowPane.getChildren().clear();
                 results.forEach(emoji ->searchFlowPane.getChildren().add(createEmojiNode(emoji)));
@@ -217,11 +220,21 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
 
 
-        boxTone.getSelectionModel().select(0);
+       // boxTone.getSelectionModel().select(0);
+        /*set the tone at zero*/
+        Map<String, List<Emoji>> map = EmojiOne.getInstance().getCategorizedEmojis(0);
+        for(Tab tab : tabPane.getTabs()) {
+            ScrollPane scrollPane = (ScrollPane) tab.getContent();
+            FlowPane pane = (FlowPane) scrollPane.getContent();
+            pane.getChildren().clear();
+            String category = tab.getId().toLowerCase();
+            if(map.get(category) == null) continue;
+            map.get(category).forEach(emoji -> pane.getChildren().add(createEmojiNode(emoji)));
+        }
         tabPane.getSelectionModel().select(1);
     }
 
-    private void refreshTabs() {
+    /*private void refreshTabs() {
         Map<String, List<Emoji>> map = EmojiOne.getInstance().getCategorizedEmojis(boxTone.getSelectionModel().getSelectedIndex()+1);
         for(Tab tab : tabPane.getTabs()) {
             ScrollPane scrollPane = (ScrollPane) tab.getContent();
@@ -231,7 +244,7 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
             if(map.get(category) == null) continue;
             map.get(category).forEach(emoji -> pane.getChildren().add(createEmojiNode(emoji)));
         }
-    }
+    }*/
 
     private Node createEmojiNode(Emoji emoji) {
         StackPane stackPane = new StackPane();
@@ -243,6 +256,15 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         imageView.setFitWidth(32);
         imageView.setFitHeight(32);
         imageView.setImage(ImageCache.getInstance().getImage(getEmojiImagePath(emoji.getHex())));
+        imageView.setOnMouseClicked(ev->{
+            System.out.println(emoji.getHex());
+            System.out.println(emoji.getShortname());
+            System.out.println(emoji.getUnicode());
+
+            String result = EmojiParser.parseToUnicode(emoji.getHex() + " " + emoji.getShortname() + " " + emoji.getUnicode());
+            System.out.println(result);
+            txtMsg.setText(txtMsg.getText() + result);
+        });
         stackPane.getChildren().add(imageView);
 
         Tooltip tooltip = new Tooltip(emoji.getShortname());
@@ -403,7 +425,11 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         Platform.runLater(this::initDialogs);
         loadingMotion.setVisible(true);
         chatPane.setVisible(false);
+        emojiFrameVBox.setVisible(false);
         initEmjis();
+        initClickListener();
+
+
        /* var meg = new Message(LOGGED_USER.getUserId(), "r", "dsasvcx sdfsdfsdf sdf sdfdf sd fsd fa asdasd asdsa", XUtils.currentTimeStamp().split(" ")[0]);
 
         SR.senderMessage(meg, MSGS_CONTAINER);
@@ -498,6 +524,26 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         amqp.setToListenToCapture("QUEUE_onUserSaved");
 
 
+    }
+
+    private void initClickListener() {
+        emojiBtn.setOnMouseClicked(event -> {
+            if(emojiFrameVBox.isVisible()){
+                // emojiFrameVBox.setVisible(false);
+                FadeOut zoomout  = new FadeOut(emojiFrameVBox);
+                zoomout.play();
+                zoomout.setOnFinished(e->{
+                    emojiFrameVBox.setVisible(false);
+                });
+            }else{
+                // emojiFrameVBox.setVisible(true);
+                FadeIn zoomIn  = new FadeIn(emojiFrameVBox);
+                zoomIn.play();
+                zoomIn.setOnFinished(event1 -> {
+                    emojiFrameVBox.setVisible(true);
+                });
+            }
+        });
     }
     // Timer t = new Timer();
 

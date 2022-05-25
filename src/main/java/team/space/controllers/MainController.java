@@ -23,6 +23,7 @@ import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import team.space.controllers.includecalender.CalenderViewController;
 import team.space.controllers.includechat.ChatPArentViewController;
 import team.space.events.ApplicationEvents;
 import team.space.events.MessageEvent;
@@ -115,6 +116,7 @@ public class MainController    implements Initializable, ApplicationEvents {
         final int[] loadedCounter = {0};
         MFXLoader loader = new MFXLoader();
         loader.addView(MFXLoaderBean.of("MESSAGE_CONTROLLER", loadURL("/views/include_chat_parent/incl.chat_parent.fxml")).setControllerFactory(c->new ChatPArentViewController(stage,this)).setDefaultRoot(false).get());
+        loader.addView(MFXLoaderBean.of("CALENDER_CONTROLLER", loadURL("/views/calender/inc.calender.fxml")).setControllerFactory(c->new CalenderViewController(stage)).setDefaultRoot(false).get());
         loader.addView(MFXLoaderBean.of("HOME_CONTROLLER", loadURL("/views/homecontroller.fxml")).setControllerFactory(c->new HomeController(stage,this)).setDefaultRoot(true).get());
         loader.addView(MFXLoaderBean.of("SETTINGS_CONTROLLER", loadURL("/views/settingscontroller.fxml")).setControllerFactory(c->new SettingsController(stage,this)).setDefaultRoot(false).get());
 
@@ -124,6 +126,7 @@ public class MainController    implements Initializable, ApplicationEvents {
                 case "MESSAGE_CONTROLLER" -> imgNavChats.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
                 case "SETTINGS_CONTROLLER" -> imgNavSettings.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
                 case "HOME_CONTROLLER" -> imgHome.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
+                case "CALENDER_CONTROLLER" -> imgNavCalender.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
 
             }
             if (bean.isDefaultView()) {

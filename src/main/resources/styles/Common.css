@@ -34,6 +34,11 @@
 	-fx-text-fill: -mfx-text-he;
 }
 
+.text-area {
+	-fx-font-family: 'emojiFont';
+
+}
+
 .sub-header-label .text {
 	-fx-font-smoothing-type: lcd;
 }
