@@ -28,7 +28,7 @@ import javafx.util.Duration;
 import lombok.SneakyThrows;
 import team.space.database.objectio.DBObjectManager;
 import team.space.database.objectio.LoginInCache;
-import team.space.database.objectio.LoginInCache_;
+
 
 import team.space.requests.resigster.RegisterRoot;
 import team.space.utils.Screen;
@@ -173,20 +173,20 @@ public class LoginInController implements Initializable {
 
                 System.out.println("login success");
 
-                Box<LoginInCache> store = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
+               /* Box<LoginInCache> store = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
                 Query<LoginInCache> query = store.query(LoginInCache_.email.equal(emailAddress)).build();
 
                 Shared.LOGGED_USER = query.findFirst();
-                query.close();
+                query.close();*/
 
 
-                Box<LoginInCache> loginInCacheBox = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
+               /* Box<LoginInCache> loginInCacheBox = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
                 Query<LoginInCache> checkExistsquery = loginInCacheBox.query().build();
                // checkExistsquery.
                var hhh=  checkExistsquery.findFirst();
 //                System.out.println("_ LOGGED_USER  :  " + checkExistsquery.get() );
                 System.out.println("_ LOGGED_USER  :  " + hhh.getUserId() );
-                System.out.println("_ LOGGED_USER  :  " + hhh.getCompanyId() );
+                System.out.println("_ LOGGED_USER  :  " + hhh.getCompanyId() );*/
 
                 // open the main window or scene
 //               var primarStage =  StageManager.getStage();

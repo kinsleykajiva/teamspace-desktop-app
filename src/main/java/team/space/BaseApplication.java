@@ -2,6 +2,7 @@ package team.space;
 
 
 import com.dustinredmond.fxtrayicon.FXTrayIcon;
+import com.j256.ormlite.table.TableUtils;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -27,15 +28,21 @@ import org.greenrobot.eventbus.ThreadMode;
 import team.space.database.objectio.DBObjectManager;
 import team.space.database.objectio.LoginInCache;
 import team.space.database.sqlite.DBManager;
+import team.space.dto.MeetDto;
+import team.space.dto.ParticipantDto;
 import team.space.events.MessageEvent;
 import team.space.utils.Shared;
 import team.space.utils.StageManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 import static team.space.controllers.LoginInController.startMainView;
+import static team.space.database.sqlite.DBManager.createTables2;
 import static team.space.utils.Constants.QUEUE_ON_USER_SAVED;
 
 public class BaseApplication extends Application {
@@ -66,16 +73,16 @@ public class BaseApplication extends Application {
 
 
 
-        Box<LoginInCache> loginInCacheBox = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
-        Query<LoginInCache> checkExistsquery1 = loginInCacheBox.query().build();
+       /* Box<LoginInCache> loginInCacheBox = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
+        Query<LoginInCache> checkExistsquery1 = loginInCacheBox.query().build();*/
 
-        if (checkExistsquery1.find().size() > 0) {
+      /*  if (checkExistsquery1.find().size() > 0) {
             System.out.println("LoginInCache exists --- "  + checkExistsquery1.findFirst());
            // return checkExistsquery1.find().get(0);
         }else{
             System.out.println("LoginInCache not exists");
            // return null;
-        }
+        }*/
 
 
         Shared.LOGGED_USER = DBManager.getinstance().getCachedUser();
@@ -112,5 +119,13 @@ public class BaseApplication extends Application {
             });
         });
 
+    }
+    public static void main(String[] args) throws SQLException {
+        Locale.setDefault(Locale.UK);
+        createTables2();
+
+
+
+        launch();
     }
 }

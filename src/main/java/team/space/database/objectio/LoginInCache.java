@@ -1,25 +1,41 @@
 package team.space.database.objectio;
 
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import team.space.dto.AccountDaoImpl;
+import team.space.dto.MeetDto;
 
 import java.util.Date;
 
 
 /**This class will always have one row based on he logged in user*/
-@Entity
-public class LoginInCache {
 
-    @Id
+@DatabaseTable(tableName = "accounts", daoClass = AccountDaoImpl.class)
+public class LoginInCache {
+    @DatabaseField(generatedId = true)
     long id;
+    @DatabaseField
     public String companyId;
+    @DatabaseField
     public String profileImage;
+    @DatabaseField
     public String fullName;
+
+    @DatabaseField
     public String email;
+    @DatabaseField
     public String userId;
+    @DatabaseField
     public int role;
+    @DatabaseField
     public String refreshToken;
     public String accessToken;
+    @ForeignCollectionField()
+    private ForeignCollection<MeetDto> meets;
 
     Date date;
 

@@ -1,9 +1,17 @@
 package team.space.database.sqlite;
 
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.support.ConnectionSource;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.mc.SQLiteMCConfig;
 import team.space.database.objectio.LoginInCache;
-
+import team.space.dto.MeetDao;
+import team.space.dto.MeetDto;
+import team.space.dto.ParticipantDao;
+import team.space.dto.ParticipantDto;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import java.io.File;
 import java.sql.*;
 import java.util.List;
@@ -12,6 +20,32 @@ import java.util.concurrent.Executors;
 
 public class DBManager {
     private Connection connection;
+    private static ConnectionSource connectionSource = null;
+    private static MeetDao meetDao;
+    private static ParticipantDao participantDao;
+    static {
+        try {
+            connectionSource = new JdbcConnectionSource( "jdbc:sqlite:" + PathToUserDocumentsFolder2() + "teamspace.db");
+
+            meetDao = DaoManager.createDao(connectionSource, MeetDto.class);
+            participantDao = DaoManager.createDao(connectionSource, ParticipantDto.class);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static MeetDao getMeetDao() {
+        return meetDao;
+    }
+
+    public static ParticipantDao getParticipantDao() {
+        return participantDao;
+    }
+    public static void createTables2() throws SQLException {
+
+        TableUtils.createTableIfNotExists(connectionSource, MeetDto.class);
+        TableUtils.createTableIfNotExists(connectionSource, ParticipantDto.class);
+    }
     public static DBManager dbIsntance;
     /** This executor does the commit job. */
     private final ExecutorService commitExecutor = Executors.newSingleThreadExecutor();
@@ -90,6 +124,19 @@ public class DBManager {
 
 
     private String PathToUserDocumentsFolder() {
+        String path = System.getProperty("user.home") + File.separator + "Documents";
+        path += File.separator + DATABASE_FOLDER_NAME;
+        File customDir = new File(path);
+        if (customDir.exists()) {
+            System.out.println(customDir + " already exists");
+        } else if (customDir.mkdirs()) {
+            System.out.println(customDir + " was created");
+        } else {
+            System.out.println(customDir + " was not created");
+        }
+        return path + File.separator;
+    }
+    private static String PathToUserDocumentsFolder2() {
         String path = System.getProperty("user.home") + File.separator + "Documents";
         path += File.separator + DATABASE_FOLDER_NAME;
         File customDir = new File(path);
