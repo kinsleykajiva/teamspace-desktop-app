@@ -1,5 +1,6 @@
 package team.space.controllers;
 
+import com.jfoenix.controls.JFXSnackbar;
 import io.github.palexdev.materialfx.font.MFXFontIcon;
 import io.github.palexdev.materialfx.utils.others.loader.MFXLoader;
 import io.github.palexdev.materialfx.utils.others.loader.MFXLoaderBean;
@@ -67,6 +68,7 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML public ImageView imgNavNotifications;
     @FXML public ImageView imgNavLogOut;
     @FXML public Label txtCaller1;
+    private JFXSnackbar snackbar ;
  /*   @FXML public ImageView imgInBox;
     @FXML public ImageView imgInBox;*/
     private Contact contactInCurrentView;
@@ -109,6 +111,7 @@ public class MainController    implements Initializable, ApplicationEvents {
         initClickListener();
         mediaUtils = new MediaUtils();
         contentPaneCalling1.setVisible(false);
+        snackbar = new JFXSnackbar(rootPane);
         stage = StageManager.getStage();
         for(Node child : mainNav.getChildren()) {
             VBox.setVgrow(child, Priority.ALWAYS);
@@ -136,6 +139,8 @@ public class MainController    implements Initializable, ApplicationEvents {
             if(loadedCounter[0] == beans.size()) {
                 System.out.println("Views are  ready " );
                 mediaUtils.playWelcomeAlert();
+                JFXSnackbar.SnackbarEvent snackbarEvent = new JFXSnackbar.SnackbarEvent(new Label("Views are ready"), Duration.seconds(13.33), null);
+                snackbar.enqueue(snackbarEvent);
             }
            // System.out.println("Loaded view: Done - " +loadedCounter[0] );
 
