@@ -1,11 +1,9 @@
 package team.space.utils.calendar;
 
 import com.calendarfx.view.DateControl;
-
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import team.space.utils.FontIconFactory;
 
 /**
  * Custom implementation of {@link com.calendarfx.view.ContextMenuProvider}.

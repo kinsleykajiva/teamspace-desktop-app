@@ -1,9 +1,6 @@
 package team.space.utils.calendar;
 
 import com.calendarfx.model.Entry;
-//import com.github.chamexxxx.meetingroombookingsystem.Application;
-//import com.github.chamexxxx.meetingroombookingsystem.controls.Dialog;
-//import com.github.chamexxxx.meetingroombookingsystem.models.Meet;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;

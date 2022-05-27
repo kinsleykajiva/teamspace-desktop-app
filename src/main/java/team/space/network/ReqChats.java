@@ -12,19 +12,15 @@ import okhttp3.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 import team.space.database.objectio.DBObjectManager;
-import team.space.database.objectio.LoginInCache;
 import team.space.models.Contact;
 import team.space.pojo.UserPojo;
 import team.space.requests.getallusers.UsersRoot;
-import team.space.requests.login.LoginRoot;
-import team.space.requests.resigster.RegisterRoot;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static team.space.network.HandleRequests.getHttpClient;
 import static team.space.network.HandleRequests.getHttpClientCache;
 import static team.space.network.ReqLogin.JSON;
 import static team.space.utils.Constants.API_BASE_URL;

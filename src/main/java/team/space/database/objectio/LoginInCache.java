@@ -4,8 +4,6 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-import io.objectbox.annotation.Entity;
-import io.objectbox.annotation.Id;
 import team.space.dto.AccountDaoImpl;
 import team.space.dto.MeetDto;
 

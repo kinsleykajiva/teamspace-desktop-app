@@ -5,11 +5,9 @@ import javafx.collections.ObservableList;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Maps;
 import org.json.JSONObject;
-import team.space.beans.Observable;
 import team.space.database.objectio.LoginInCache;
 import team.space.models.ChatHistory;
 import team.space.models.Contact;
-import team.space.pojo.UserPojo;
 
 public class Shared {
 

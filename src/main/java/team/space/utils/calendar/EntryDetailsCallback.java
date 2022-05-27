@@ -2,7 +2,6 @@ package team.space.utils.calendar;
 
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.DateControl;
-//import com.github.chamexxxx.meetingroombookingsystem.models.Meet;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.InputEvent;
 import javafx.util.Callback;

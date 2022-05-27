@@ -1,7 +1,6 @@
 package team.space.utils.calendar;
 
 import com.calendarfx.model.*;
-//import com.github.chamexxxx.meetingroombookingsystem.models.Meet;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;

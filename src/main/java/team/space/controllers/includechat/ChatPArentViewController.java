@@ -1,10 +1,7 @@
 package team.space.controllers.includechat;
 
-import animatefx.animation.*;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DeliverCallback;
+import animatefx.animation.FadeIn;
+import animatefx.animation.FadeOut;
 import com.vdurmont.emoji.EmojiParser;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
@@ -30,7 +27,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,16 +44,11 @@ import team.space.notifications.rabbitmq.AMQP;
 import team.space.utils.XUtils;
 import team.space.widgetlists.ContactchatItem;
 
-import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.TimeoutException;
-
 
 import static team.space.network.ReqChats.getAllUsersCompany;
 import static team.space.network.ReqChats.sendChatMessage;
-import static team.space.utils.Constants.QUEUE_ON_USER_SAVED;
 import static team.space.utils.Shared.*;
 
 public class ChatPArentViewController implements Initializable, ApplicationEvents {

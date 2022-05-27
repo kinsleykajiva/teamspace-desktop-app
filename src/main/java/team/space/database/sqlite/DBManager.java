@@ -1,17 +1,16 @@
 package team.space.database.sqlite;
 
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import org.sqlite.SQLiteConfig;
-import org.sqlite.mc.SQLiteMCConfig;
 import team.space.database.objectio.LoginInCache;
 import team.space.dto.MeetDao;
 import team.space.dto.MeetDto;
 import team.space.dto.ParticipantDao;
 import team.space.dto.ParticipantDto;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
+
 import java.io.File;
 import java.sql.*;
 import java.util.List;

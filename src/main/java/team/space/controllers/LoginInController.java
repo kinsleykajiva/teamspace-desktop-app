@@ -1,9 +1,5 @@
 package team.space.controllers;
 
-import io.objectbox.Box;
-import io.objectbox.BoxStore;
-import io.objectbox.DebugFlags;
-import io.objectbox.query.Query;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -11,34 +7,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import lombok.SneakyThrows;
-import team.space.database.objectio.DBObjectManager;
 import team.space.database.objectio.LoginInCache;
-
-
 import team.space.requests.resigster.RegisterRoot;
 import team.space.utils.Screen;
 import team.space.utils.Shared;
 import team.space.utils.StageManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.EventObject;
 import java.util.ResourceBundle;
 
 import static team.space.network.ReqLogin.loginReq;

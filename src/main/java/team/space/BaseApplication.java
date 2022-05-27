@@ -2,17 +2,10 @@ package team.space;
 
 
 import com.dustinredmond.fxtrayicon.FXTrayIcon;
-import com.j256.ormlite.table.TableUtils;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DeliverCallback;
 import io.github.palexdev.materialfx.controls.MFXNotificationCenter;
 import io.github.palexdev.materialfx.controls.cell.MFXNotificationCell;
 import io.github.palexdev.materialfx.notifications.MFXNotificationCenterSystem;
 import io.github.palexdev.materialfx.notifications.MFXNotificationSystem;
-import io.objectbox.Box;
-import io.objectbox.query.Query;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -26,24 +19,17 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import team.space.database.objectio.DBObjectManager;
-import team.space.database.objectio.LoginInCache;
 import team.space.database.sqlite.DBManager;
-import team.space.dto.MeetDto;
-import team.space.dto.ParticipantDto;
 import team.space.events.MessageEvent;
 import team.space.utils.Shared;
 import team.space.utils.StageManager;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Locale;
-import java.util.concurrent.TimeoutException;
 
 import static team.space.controllers.LoginInController.startMainView;
 import static team.space.database.sqlite.DBManager.createTables2;
-import static team.space.utils.Constants.QUEUE_ON_USER_SAVED;
 
 public class BaseApplication extends Application {
     DBManager sqlAccess;
@@ -117,11 +103,15 @@ public class BaseApplication extends Application {
                     setPrefHeight(100);
                 }
             });
+
+
         });
+
+
 
     }
     public static void main(String[] args) throws SQLException {
-        Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.ENGLISH);
         createTables2();
 
 

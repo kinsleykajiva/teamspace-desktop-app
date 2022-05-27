@@ -1,7 +1,5 @@
 package team.space.pojo;
 
-import io.objectbox.annotation.Id;
-
 import java.time.OffsetDateTime;
 
 public class UserPojo2 {

@@ -1,19 +1,14 @@
 package team.space.database.rethinkdb;
 
 //import com.rethinkdb.net.Result;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.json.JSONObject;
+
+import com.rethinkdb.net.Cursor;
+import team.space.pojo.UserPojo2;
 
 import java.time.OffsetDateTime;
 
-import static com.rethinkdb.gen.proto.TermType.JSON;
 import static team.space.database.rethinkdb.DBManager.getinstance;
 import static team.space.database.rethinkdb.DBManager.r;
-import com.rethinkdb.net.Cursor;
-import team.space.pojo.UserPojo;
-import team.space.pojo.UserPojo2;
 
 public class UserModel {
 

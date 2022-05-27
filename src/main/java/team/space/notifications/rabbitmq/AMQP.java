@@ -11,8 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
-import static team.space.utils.Constants.QUEUE_ON_USER_SAVED;
-
 public class AMQP {
 
    public  static Set<Thread> threads  = new HashSet<>();

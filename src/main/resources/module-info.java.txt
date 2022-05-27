@@ -1,0 +1,74 @@
+module team.space {
+
+
+    requires javafx.base;
+    requires javafx.graphics;
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires javafx.media;
+    requires java.desktop;
+    requires com.calendarfx.view;
+    requires socket.io.client;
+    requires engine.io.client;
+    requires com.google.guice;
+    requires MaterialFX;
+    requires org.slf4j;
+    requires org.json;
+    requires okhttp3;
+    requires org.eclipse.collections.api;
+    requires org.eclipse.collections.impl;
+
+    requires com.google.common;
+    requires com.jfoenix;
+    requires com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.databind;
+    requires org.kordamp.ikonli.javafx;
+    requires webrtc.java;
+    requires javax.inject;
+    requires java.net.http;
+
+
+    requires java.prefs;
+    /*requires java.json.bind;
+    requires java.json;*/
+
+//    requires java.ws.rs;
+    requires okio;
+    requires org.jetbrains.annotations;
+    requires com.google.gson;
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.core;
+    requires animated;
+    requires jfxanimation;
+    requires okhttp3.logging;
+    requires rethinkdb.driver;
+    requires java.sql;
+    requires org.xerial.sqlitejdbc;
+    requires ormlite.core;
+    requires ormlite.jdbc;
+
+    requires eventbus.java;
+    requires com.rabbitmq.client;
+    requires FXTrayIcon;
+    requires AnimateFX;
+    requires emoji.java;
+    requires objectbox.java.api;
+    requires objectbox.java;
+    requires objectbox.java.covertor;
+//    requires objectbox.java.api;
+
+    exports team.space;
+    exports team.space.requests.getallusers to com.fasterxml.jackson.databind;
+    exports team.space.requests.login to com.fasterxml.jackson.databind;
+    exports team.space.requests.resigster to com.fasterxml.jackson.databind;
+    exports team.space.network to com.fasterxml.jackson.databind;
+    exports team.space.dto;
+    opens team.space.dto to ormlite.core;
+    opens team.space.database.sqlite to ormlite.core;
+    opens team.space.database.rethinkdb to ormlite.core;
+    opens team.space to javafx.graphics, javafx.fxml, com.google.common;
+    opens team.space.controllers to javafx.graphics, javafx.fxml, com.google.common;
+    opens team.space.widgetlists to javafx.graphics, javafx.fxml, com.google.common;
+    opens team.space.utils to javafx.graphics, javafx.fxml, com.google.common;
+    opens team.space.emojis to javafx.graphics, javafx.fxml, com.google.common;
+}

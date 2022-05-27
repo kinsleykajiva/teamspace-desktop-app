@@ -2,11 +2,7 @@ package team.space.database.objectio;
 
 import io.objectbox.BoxStore;
 import io.objectbox.DebugFlags;
-import lombok.SneakyThrows;
 import team.space.MyObjectBox;
-
-import java.io.File;
-import java.io.IOException;
 
 public class DBObjectManager {
 

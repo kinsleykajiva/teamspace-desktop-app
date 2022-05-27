@@ -1,18 +1,12 @@
 package team.space.controllers.includecalender;
 
-import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
-import com.calendarfx.view.CalendarView;
-import com.calendarfx.view.DateControl;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import team.space.beans.DoubleProperty;
 import team.space.database.sqlite.DBManager;
 import team.space.dto.MeetDto;
 import team.space.dto.ParticipantDto;
@@ -20,12 +14,10 @@ import team.space.models.Meet;
 import team.space.models.Participant;
 import team.space.utils.calendar.WeeklyCalendar;
 
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;

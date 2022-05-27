@@ -1,7 +1,6 @@
 package team.space.database.rethinkdb;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
 
 import static team.space.database.rethinkdb.DBManager.getinstance;
 import static team.space.database.rethinkdb.DBManager.r;
