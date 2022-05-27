@@ -353,6 +353,22 @@
 
 
 /***************************************/
+.cat-button {
+    -fx-background-color: #fff;
+    -fx-text-fill: #555;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 2px;
+    -fx-border-color: #ebebeb;
+    -fx-border-radius: 10px;
+}
+
+.cat-button:hover {
+    -fx-border-color: #999;
+    -fx-cursor: hand;
+}
+/***************************************/
 
 #txtMsgContainar{
 

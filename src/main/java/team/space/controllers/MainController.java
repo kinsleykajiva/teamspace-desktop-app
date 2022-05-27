@@ -1,6 +1,10 @@
 package team.space.controllers;
 
 import com.jfoenix.controls.JFXSnackbar;
+import dev.onvoid.webrtc.PeerConnectionFactory;
+import dev.onvoid.webrtc.RTCPeerConnection;
+import dev.onvoid.webrtc.media.video.VideoDeviceSource;
+import dev.onvoid.webrtc.media.video.VideoTrack;
 import io.github.palexdev.materialfx.font.MFXFontIcon;
 import io.github.palexdev.materialfx.utils.others.loader.MFXLoader;
 import io.github.palexdev.materialfx.utils.others.loader.MFXLoaderBean;
@@ -30,15 +34,24 @@ import team.space.events.ApplicationEvents;
 import team.space.events.MessageEvent;
 import team.space.models.Contact;
 import team.space.utils.MediaUtils;
+import team.space.utils.Shared;
 import team.space.utils.StageManager;
+import team.space.webrtc.janus.Entities.Room;
+import team.space.webrtc.janus.Entities.VideoItem;
+import team.space.webrtc.janus.utils.JanusClient;
+import team.space.webrtc.webrtcutils.CallManager;
 
+import java.math.BigInteger;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static team.space.utils.ScreenController.loadURL;
+
 
 public class MainController    implements Initializable, ApplicationEvents {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -60,8 +73,7 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML
     public MFXFontIcon maximiseScreenIcon;
 
-   private MediaUtils mediaUtils;
-
+    private MediaUtils  mediaUtils = new MediaUtils();
     @FXML
     public VBox mainNav;
     @FXML public ImageView imgHome ,imgDropCall1 ,imgRingRingUserIcon1 , imgMic1, imgVideConvert1;
@@ -80,7 +92,7 @@ public class MainController    implements Initializable, ApplicationEvents {
     public MainController() {
         EventBus.getDefault().register(this);
     }
-
+private CallManager callManager;
 
     // UI updates must run on MainThread
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -113,7 +125,7 @@ public class MainController    implements Initializable, ApplicationEvents {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initClickListener();
-        mediaUtils = new MediaUtils();
+        callManager = new CallManager(contentPaneCalling1);
         contentPaneCalling1.setVisible(false);
         snackbar = new JFXSnackbar(rootPane);
         stage = StageManager.getStage();

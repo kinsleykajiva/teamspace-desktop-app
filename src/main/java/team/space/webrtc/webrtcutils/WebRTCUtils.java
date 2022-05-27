@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class WebRTCUtils {
-
+   public static final String JANUS_URL = "wss://janus.conf.meetecho.com/ws";
     private static  boolean isMediaReady = false;
     private static final Pattern SPLIT = Pattern.compile("\\r?\\n");
     public static RTCSessionDescription setCodecPreference(final RTCSessionDescription sessionDescription,

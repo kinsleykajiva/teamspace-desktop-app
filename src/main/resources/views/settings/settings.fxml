@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="692.0" prefWidth="1031.0" stylesheets="@../../styles/parent.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="team.space.controllers.settings.SettingsViewController">
    <children>
       <VBox prefHeight="692.0" prefWidth="1031.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -43,7 +42,7 @@
                 </Tab>
                   <Tab fx:id="audioVideotabPane" text="Audio/Video">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-color: grey; -fx-border-radius: 20px;">
                            <children>
                               <HBox alignment="CENTER" layoutX="40.0" layoutY="580.0" spacing="10" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="40.0">
                                  <children>
@@ -56,9 +55,7 @@
                                  </padding>
                                  <children>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1E308" text="Caller ID" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                    <TextField fx:id="sessionIdField"  GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1E308" text="System Input" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                    <ChoiceBox fx:id="controllerInput" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="sessionIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1E308" text="Preferred Video Codec" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                                     <ChoiceBox fx:id="codecPreference" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label alignment="CENTER_RIGHT" maxWidth="1E308" text="Audio Output Media" GridPane.columnIndex="0" GridPane.rowIndex="3" />
