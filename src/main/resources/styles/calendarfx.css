@@ -6,7 +6,15 @@
  * The page base consists of a big content node in the middle and a header that displays
  * navigation buttons to go forward, back, to today and the currently shown date (range).
  */
-
+* {
+    -fx-primary-color: #2A363F; /* black */
+    -fx-primary-text-color: #fbfcfc;
+    -fx-secondary-color: #d5d5d5; /* grey */
+    -fx-secondary-text-color: #4a4a4a;
+    -fx-base-color: #3bb78f; /* green */
+    -fx-base2-color: #0bab64;
+    -fx-base-gradient-color: linear-gradient(to top, -fx-base2-color, -fx-base-color);
+}
 .calendar-page > .container > .header > .navigation-button-bar .button {
     -fx-padding: 7px 8px;
     -fx-font-size: 14px;

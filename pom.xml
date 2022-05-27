@@ -95,6 +95,11 @@
             <artifactId>materialfx</artifactId>
             <version>11.13.5</version>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge.jsdp</groupId>
+            <artifactId>jsdp</artifactId>
+            <version>1.1</version>
+        </dependency>
 
         <dependency>
             <groupId>io.objectbox</groupId>

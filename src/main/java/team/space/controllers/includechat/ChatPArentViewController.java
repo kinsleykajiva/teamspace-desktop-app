@@ -46,12 +46,19 @@ import team.space.widgetlists.ContactchatItem;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static team.space.network.ReqChats.getAllUsersCompany;
 import static team.space.network.ReqChats.sendChatMessage;
 import static team.space.utils.Shared.*;
 
 public class ChatPArentViewController implements Initializable, ApplicationEvents {
+
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private static final boolean SHOW_MISC = false;
     @FXML
     private ScrollPane searchScrollPane;
@@ -88,7 +95,17 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
         EventBus.getDefault().register(this);
     }
-
+    private void execute(Runnable runnable) {
+        executor.execute(runnable);
+    }
+    private void executeAndWait(Runnable runnable) {
+        try {
+            executor.submit(runnable).get();
+        } catch (Exception e) {
+            System.out.println("ExecuteAndWait failed");
+            // LOGGER.log(System.Logger.Level.ERROR, "Execute task failed");
+        }
+    }
 
     void initDialogs() {
         this.dialogContent = MFXGenericDialogBuilder.build()
@@ -410,7 +427,58 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
     }
 
+void loadChatInfo(){
+    loadingMotion.setVisible(true);
+    Task<ObservableList<Contact>> getContacts = new Task<>() {
+        @Override
+        protected ObservableList<Contact> call() throws Exception {
 
+            return getAllUsersCompany();
+        }
+    };
+
+    getContacts.setOnSucceeded(event -> {
+        loadingMotion.setVisible(false);
+        contactObservableArrayList.clear();
+        ObservableList<Contact> contacts = getContacts.getValue();
+        System.out.println(contacts);
+        contactObservableArrayList.addAll(contacts);
+        ContactchatItemList.clear();
+        contactObservableArrayList.forEach(contact -> {
+            //   System.out.println(contact.getName());
+            ContactchatItem item = new ContactchatItem(contact);
+            ContactchatItemList.add(item);
+            item.getRootAncherPane_user_custome_cell().setOnMouseClicked(e -> {
+                //  item.rectangleCurrentSelect.setVisible(false);
+                ContactchatItemList.forEach(contactchatItem -> {
+                    if (contactchatItem != item) {
+                        contactchatItem.rectangleCurrentSelect.setVisible(false);
+                    }else{
+                        contactchatItem.rectangleCurrentSelect.setVisible(true);
+                    }
+                });
+
+                setContactInChatView(contact);
+            });
+            MAIN_CONTACTS.getChildren().add(item.getRootAncherPane_user_custome_cell());
+        });
+
+    });
+
+    getContacts.setOnFailed(event -> {
+        loadingMotion.setVisible(false);
+        getContacts.getException().printStackTrace();
+        System.err.println("Failed" + getContacts.getException());
+    });
+
+    getContacts.setOnCancelled(event -> {
+        loadingMotion.setVisible(false);
+        System.err.println("Cancelled");
+    });
+
+    new Thread(getContacts).start();
+
+}
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(this::initDialogs);
@@ -419,7 +487,9 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
         emojiFrameVBox.setVisible(false);
         initEmjis();
         initClickListener();
-
+        //run task repeatedly every 10 seconds after the previous task is finished
+      //  scheduledExecutorService.scheduleWithFixedDelay(this::loadChatInfo, 10 ,10 , TimeUnit.SECONDS);
+        executeAndWait(this::loadChatInfo);
 
        /* var meg = new Message(LOGGED_USER.getUserId(), "r", "dsasvcx sdfsdfsdf sdf sdfdf sd fsd fa asdasd asdsa", XUtils.currentTimeStamp().split(" ")[0]);
 
@@ -437,53 +507,6 @@ public class ChatPArentViewController implements Initializable, ApplicationEvent
 
         txtMsg.setText("");
 
-        Task<ObservableList<Contact>> getContacts = new Task<>() {
-            @Override
-            protected ObservableList<Contact> call() throws Exception {
-                contactObservableArrayList.clear();
-                return getAllUsersCompany();
-            }
-        };
-
-        getContacts.setOnSucceeded(event -> {
-            loadingMotion.setVisible(false);
-            ObservableList<Contact> contacts = getContacts.getValue();
-            System.out.println(contacts);
-            contactObservableArrayList.addAll(contacts);
-            ContactchatItemList.clear();
-            contactObservableArrayList.forEach(contact -> {
-                //   System.out.println(contact.getName());
-                ContactchatItem item = new ContactchatItem(contact);
-                ContactchatItemList.add(item);
-                item.getRootAncherPane_user_custome_cell().setOnMouseClicked(e -> {
-                  //  item.rectangleCurrentSelect.setVisible(false);
-                    ContactchatItemList.forEach(contactchatItem -> {
-                        if (contactchatItem != item) {
-                            contactchatItem.rectangleCurrentSelect.setVisible(false);
-                        }else{
-                            contactchatItem.rectangleCurrentSelect.setVisible(true);
-                        }
-                    });
-
-                    setContactInChatView(contact);
-                });
-                MAIN_CONTACTS.getChildren().add(item.getRootAncherPane_user_custome_cell());
-            });
-
-        });
-
-        getContacts.setOnFailed(event -> {
-            loadingMotion.setVisible(false);
-            getContacts.getException().printStackTrace();
-            System.err.println("Failed" + getContacts.getException());
-        });
-
-        getContacts.setOnCancelled(event -> {
-            loadingMotion.setVisible(false);
-            System.err.println("Cancelled");
-        });
-
-        new Thread(getContacts).start();
 
 
         txtMsg.textProperty().addListener((obs, old, niu) -> {

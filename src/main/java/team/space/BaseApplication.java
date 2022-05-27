@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import static team.space.controllers.LoginInController.startMainView;
 import static team.space.database.sqlite.DBManager.createTables2;
+import static team.space.webrtc.webrtcutils.WebRTCUtils.isMediaReady;
 
 public class BaseApplication extends Application {
     DBManager sqlAccess;
@@ -104,7 +105,7 @@ public class BaseApplication extends Application {
                 }
             });
 
-
+            isMediaReady();
         });
 
 
