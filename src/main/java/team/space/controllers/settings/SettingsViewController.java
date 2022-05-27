@@ -23,6 +23,7 @@ public class SettingsViewController implements Initializable {
     private ChoiceBox<AudioDevice> audioOutput;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setAudioOutputDevices(WebRTCUtils.getAudioRenderDevicesBlocking());
         codecPreference.setItems(FXCollections.observableArrayList(WebRTCUtils.CodecPreference.getAvailablePreferences()));
         codecPreference.setValue(WebRTCUtils.CodecPreference.VP9);
 
