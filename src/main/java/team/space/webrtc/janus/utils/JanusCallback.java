@@ -10,10 +10,9 @@ public interface JanusCallback {
     void onAttached(BigInteger handleId);
 
     /**
-     * 订阅回调
      *
-     * @param subscribeHandleId 订阅HandlerId
-     * @param feedId            订阅 feedId
+     * @param subscribeHandleId HandlerId
+     * @param feedId            feedId
      */
     void onSubscribeAttached(BigInteger subscribeHandleId, BigInteger feedId);
 

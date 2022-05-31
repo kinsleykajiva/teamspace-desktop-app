@@ -125,8 +125,8 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
     }
 
     /**
-     * attach 到发布者的 handler 上，准备接收视频流
-     * 每个发布者都要 attach 一遍，然后协商 sdp, SFU
+     * attach handler
+     * attach 一 sdp, SFU
      *
      * @param feedId
      */
@@ -182,7 +182,6 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
     }
 
     /**
-     * 开始订阅
      *
      * @param subscriptionHandleId
      * @param sdp
@@ -239,10 +238,9 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
     }
 
     /**
-     * 订阅
      *
-     * @param roomId 房间ID
-     * @param feedId 要订阅的ID
+     * @param roomId
+     * @param feedId
      */
     public void subscribe(BigInteger subscriptionHandleId, int roomId, BigInteger feedId) {
         JSONObject message = new JSONObject();
@@ -329,7 +327,6 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
 
     @Override
     public void onMessage(String message) {
-        // Log.d(TAG, "收到消息》》》" + message);
         System.err.println("onMessage kkk 》》》" + message);
         try {
             JSONObject obj = new JSONObject(message);
@@ -438,33 +435,30 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
 
     private void startKeepAliveTimer() {
         isKeepAliveRunning = true;
-        keepAliveThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isKeepAliveRunning && !Thread.interrupted()) {
-                    try {
-                        Thread.sleep(25000);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                    if (webSocketChannel != null && webSocketChannel.isConnected()) {
-                        JSONObject obj = new JSONObject();
-                        try {
-                            obj.put("janus", "keepalive");
-                            obj.put("session_id", sessionId);
-                            obj.put("transaction", randomString(12));
-                            webSocketChannel.sendMessage(obj.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        // Log.e(TAG, "keepAlive failed websocket is null or not connected");
-                        System.out.println("keepAlive failed websocket is null or not connected");
-                    }
+        keepAliveThread = new Thread(() -> {
+            while (isKeepAliveRunning && !Thread.interrupted()) {
+                try {
+                    Thread.sleep(25000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
-                //   Log.d(TAG, "keepAlive thread stopped");
-                System.out.println("keepAlive thread stopped");
+                if (webSocketChannel != null && webSocketChannel.isConnected()) {
+                    JSONObject obj = new JSONObject();
+                    try {
+                        obj.put("janus", "keepalive");
+                        obj.put("session_id", sessionId);
+                        obj.put("transaction", randomString(12));
+                        webSocketChannel.sendMessage(obj.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+
+                    System.out.println("keepAlive failed websocket is null or not connected");
+                }
             }
+
+            System.out.println("keepAlive thread stopped");
         }, "KeepAlive");
         keepAliveThread.start();
     }

@@ -3,27 +3,32 @@ package team.space.webrtc.webrtcutils;
 import dev.onvoid.webrtc.*;
 import dev.onvoid.webrtc.media.MediaDevices;
 import dev.onvoid.webrtc.media.MediaStream;
+import dev.onvoid.webrtc.media.MediaStreamTrack;
 import dev.onvoid.webrtc.media.audio.AudioOptions;
 import dev.onvoid.webrtc.media.audio.AudioTrack;
 import dev.onvoid.webrtc.media.audio.AudioTrackSource;
-import dev.onvoid.webrtc.media.video.VideoCapture;
-import dev.onvoid.webrtc.media.video.VideoDevice;
-import dev.onvoid.webrtc.media.video.VideoDeviceSource;
-import dev.onvoid.webrtc.media.video.VideoTrack;
+import dev.onvoid.webrtc.media.video.*;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import org.eclipse.collections.api.factory.Maps;
+import org.eclipse.collections.api.map.MutableMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import team.space.utils.MediaUtils;
 import team.space.utils.Shared;
+import team.space.utils.XUtils;
+import team.space.webrtc.janus.CreateAnswerCallback;
+import team.space.webrtc.janus.CreateOfferCallback;
+import team.space.webrtc.janus.CreatePeerConnectionCallback;
 import team.space.webrtc.janus.Entities.Publisher;
 import team.space.webrtc.janus.Entities.Room;
 import team.space.webrtc.janus.Entities.VideoItem;
@@ -31,9 +36,10 @@ import team.space.webrtc.janus.utils.JanusClient;
 import team.space.webrtc.janus.utils.VideoView;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static team.space.webrtc.webrtcutils.WebRTCUtils.JANUS_URL;
 
@@ -46,19 +52,22 @@ public class CallManager {
     private VideoDeviceSource videoSource;
     private JanusClient janusClient;
     private BigInteger videoRoomHandlerId;
-    private List<VideoItem> videoItemList = new ArrayList<>();
-    Room room = new Room(1234);
-    String userName = Shared.LOGGED_USER.getFullName();
-    RTCConfiguration rtcConfiguration = new RTCConfiguration();
+    private MutableMap<String, VideoView> videoViewNodeMap = Maps.mutable.with();
+    // private List<VideoItem> videoItemList = new ArrayList<>();
+    private ObservableList<VideoItem> videoItemList = FXCollections.observableArrayList();
+    private Room room = new Room(1234);
+    private String userName = Shared.LOGGED_USER.getFullName();
+    private RTCConfiguration rtcConfiguration = new RTCConfiguration();
 
 
-    private StackPane centerRoot;
+    private VBox centerRoot;
 
-    public CallManager(StackPane centerRoot) {
+    public CallManager(VBox centerRoot) {
         this.centerRoot = centerRoot;
     }
 
-    void initJanusWebrtcSession(){
+
+    public void initJanusWebrtcSession() {
         RTCIceServer stunServer = new RTCIceServer();
         stunServer.urls.add("stun:stun.l.google.com:19302");
         rtcConfiguration.iceServers.add(stunServer);
@@ -66,11 +75,10 @@ public class CallManager {
         janusClient = new JanusClient(JANUS_URL);
         janusClient.setJanusCallback(janusCallback);
 
-        peerConnection = peerConnectionFactory.createPeerConnection(rtcConfiguration, new PeerConnectionObserver(){
+        peerConnection = peerConnectionFactory.createPeerConnection(rtcConfiguration, new PeerConnectionObserver() {
 
             @Override
             public void onIceGatheringChange(RTCIceGatheringState state) {
-                // PeerConnectionObserver.super.onIceGatheringChange(state);
                 janusClient.trickleCandidateComplete(videoRoomHandlerId);
             }
 
@@ -84,7 +92,6 @@ public class CallManager {
         AudioTrackSource audioSource = peerConnectionFactory.createAudioSource(audioOptions);
         AudioTrack audioTrack = peerConnectionFactory.createAudioTrack("audioTrack", audioSource);
 
-        peerConnection.addTrack(audioTrack, List.of("stream"));
 
         videoSource = new VideoDeviceSource();
         VideoDevice device = MediaDevices.getVideoCaptureDevices().get(0);
@@ -94,9 +101,58 @@ public class CallManager {
         videoTrack = peerConnectionFactory.createVideoTrack("CAM", videoSource);
 
         peerConnection.addTrack(videoTrack, List.of("stream"));
+        peerConnection.addTrack(audioTrack, List.of("stream"));
+
         janusClient.connect();
 
+        videoItemList.addListener((ListChangeListener<VideoItem>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    for (VideoItem item : c.getAddedSubList()) {
+                        System.out.println("XXXXXX-- Added:###: " + item.getUserId());
+                        if (item.getDisplay().equals(userName)) {
+                            Platform.runLater(() -> {
+
+
+                                System.out.println("local video view");
+                                VideoView localVideoView = new VideoView();
+                                localVideoView.resize(400, 400);
+                                localVideoView.setId(String.valueOf(item.getUserId()));
+                                centerRoot.getChildren().add(localVideoView);
+                                videoTrack.addSink(localVideoView::setVideoFrame);
+
+                            });
+
+                        } else {
+                            Platform.runLater(() -> {
+                                System.out.println("remote video view");
+                                VideoView remoteVideoView = new VideoView();
+                                remoteVideoView.resize(400, 400);
+                                remoteVideoView.setId(String.valueOf(item.getUserId()));
+                                centerRoot.getChildren().add(remoteVideoView);
+                                videoViewNodeMap.put(String.valueOf(item.getUserId()), remoteVideoView);
+                            });
+                        }
+                    }
+                }
+                if (c.wasRemoved()) {
+                    for (VideoItem item : c.getRemoved()) {
+                        if (item.getDisplay().equals(userName)) {
+                            Platform.runLater(() -> {
+                                System.out.println("removing local video view");
+                            });
+                        }
+                    }
+                }
+            }
+        });
+
     }
+
+    void notifyChnagesAll() {
+
+    }
+
     private team.space.webrtc.janus.utils.JanusCallback janusCallback = new team.space.webrtc.janus.utils.JanusCallback() {
         @Override
         public void onCreateSession(BigInteger sessionId) {
@@ -105,7 +161,6 @@ public class CallManager {
 
         @Override
         public void onAttached(BigInteger handleId) {
-            //    Log.d(TAG, "onAttached");
             System.out.println("onAttached");
             videoRoomHandlerId = handleId;
             janusClient.joinRoom(handleId, room.getId(), userName);
@@ -118,7 +173,6 @@ public class CallManager {
             Publisher publisher = room.findPublisherById(feedId);
             if (publisher != null) {
                 publisher.setHandleId(subscriptionHandleId);
-
                 janusClient.subscribe(subscriptionHandleId, room.getId(), feedId);
             }
         }
@@ -135,11 +189,10 @@ public class CallManager {
 
         @Override
         public void onMessage(BigInteger sender, BigInteger handleId, JSONObject msg, JSONObject jsep) {
-            System.err.println("onMessage  : " + msg);
+            System.out.println("onMessage  : " + msg);
             if (!msg.has("videoroom")) {
                 return;
             }
-            System.err.println("panooo - 0");
             try {
                 String type = msg.getString("videoroom");
                 if ("joined".equals(type)) {
@@ -148,7 +201,6 @@ public class CallManager {
                         @Override
                         public void onCreateOfferSuccess(RTCSessionDescription sdp) {
                             if (videoRoomHandlerId != null) {
-
                                 janusClient.publish(videoRoomHandlerId, sdp);
                             }
                         }
@@ -162,38 +214,38 @@ public class CallManager {
                     JSONArray publishers = msg.getJSONArray("publishers");
                     handleNewPublishers(publishers);
                 } else if ("event".equals(type)) {
-                    if (msg.has("configured") && msg.getString("configured").equals("ok")
-                            && jsep != null) {
+                    if (msg.has("configured") && msg.getString("configured").equals("ok") && jsep != null) {
                         //  sdp answer
                         String sdp = jsep.getString("sdp");
                         peerConnection.setRemoteDescription(new RTCSessionDescription(RTCSdpType.ANSWER, sdp), new SetSessionDescriptionObserver() {
                             @Override
                             public void onSuccess() {
-                                System.out.println("setRemoteDescription onCreateSuccess");
-
-                                System.out.println("setRemoteDescription onSetSuccess");
+                                System.out.println(" setRemoteDescription onCreateSuccess");
                                 Platform.runLater(() -> {
-                                    videoCapturer.start();
+
                                     VideoItem videoItem = addNewVideoItem(null, userName);
                                     videoItem.setPeerConnection(peerConnection);
                                     videoItem.setVideoTrack(videoTrack);
-
-
+                                    videoItemList
+                                            .stream()
+                                            .filter(item -> item.getDisplay().equals(userName))
+                                            .forEach(item -> {
+                                                item.setPeerConnection(peerConnection);
+                                                item.setVideoTrack(videoTrack);
+                                            });
                                 });
-
                             }
-
-
                             @Override
                             public void onFailure(String error) {
-                                System.out.println("setRemoteDescription onSetFailure  " + error);
+                                System.err.println("setRemoteDescription onFailure   - " + error);
 
                             }
                         });
                     } else if (msg.has("unpublished")) {
                         Long unPublishdUserId = msg.getLong("unpublished");
+                        System.out.println("unPublishdUserId  " + unPublishdUserId);
                     } else if (msg.has("leaving")) {
-
+                        System.out.println("leaving - ###");
                         BigInteger leavingUserId = new BigInteger(msg.getString("leaving"));
                         room.removePublisherById(leavingUserId);
                         Platform.runLater(() -> {
@@ -204,34 +256,25 @@ public class CallManager {
                                 VideoItem next = it.next();
                                 if (leavingUserId.equals(next.getUserId())) {
                                     it.remove();
-
                                 }
                                 index++;
                             }
 
                         });
                     } else if (msg.has("publishers")) {
-
+                        System.out.println("publishers - ###");
                         JSONArray publishers = msg.getJSONArray("publishers");
                         handleNewPublishers(publishers);
                     } else if (msg.has("started") && msg.getString("started").equals("ok")) {
-
-                        //    Log.d(TAG, "subscription started ok");
                         System.out.println("subscription started ok");
                     }
                 } else if ("attached".equals(type) && jsep != null) {
-
                     String sdp = jsep.getString("sdp");
-                    BigInteger feedId = new BigInteger(String.valueOf(msg.getBigInteger("id")));
+                    BigInteger feedId = msg.getBigInteger("id");
                     String display = msg.getString("display");
                     Publisher publisher = room.findPublisherById(feedId);
-
-
-                    //   VideoItem videoItem = addNewVideoItem(feedId, display);
-                    Platform.runLater(() -> {
-                        //  adapter.notifyItemInserted(videoItemList.size() - 1);
-
-                    });
+                    VideoItem videoItem = addNewVideoItem(feedId, display);
+                    VideoView videoFrameNode = (VideoView) centerRoot.lookup(String.valueOf(videoItem.getUserId()));
 
                     RTCPeerConnection peerConnection = createPeerConnection(new CreatePeerConnectionCallback() {
                         @Override
@@ -246,35 +289,43 @@ public class CallManager {
 
                         @Override
                         public void onIceCandidatesRemoved(RTCIceCandidate[] candidates) {
-
                         }
 
+
                         @Override
-                        public void onAddStream(MediaStream stream) {
-                            if (stream.getVideoTracks().length > 0) {
-                                Platform.runLater(() -> {
-                                    //   videoItem.videoTrack = stream.getAudioTracks()[0];
-                                    //    adapter.notifyDataSetChanged();
-                                    addViewItem(stream.getVideoTracks()[0]);
-
-                                });
-                            }
-
+                        public void publishFrame(VideoTrack videoTrack, VideoFrame frame) {
+                            Platform.runLater(() -> {
+                                centerRoot.getChildren().stream()
+                                        .filter(node -> node instanceof VideoView && !node.getId().equals(null) && !node.getId().equals("null"))
+                                        .forEach(node -> {
+                                            VideoView videoView = (VideoView) node;
+                                            centerRoot.lookup(String.valueOf(videoItem.getUserId()));
+                                            if (videoView != null) {
+                                                try {
+                                                    frame.retain();
+                                                    videoView.setVideoFrame(frame);
+                                                    frame.release();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    System.err.println("Render Error : " + e.getMessage());
+                                                }
+                                            }
+                                        });
+                            });
                         }
 
                         @Override
                         public void onRemoveStream(MediaStream stream) {
-                            //  videoItem.videoTrack = null;
+                            // videoItem.videoTrack = null;
+                            videoItem.setVideoTrack(null);
                         }
                     });
-                    //videoItem.peerConnection = peerConnection;
-                    peerConnection.setRemoteDescription(new RTCSessionDescription(RTCSdpType.ANSWER, sdp), new SetSessionDescriptionObserver() {
+
+                    videoItem.setPeerConnection(peerConnection);
+                    peerConnection.setRemoteDescription(new RTCSessionDescription(RTCSdpType.OFFER, sdp), new SetSessionDescriptionObserver() {
 
                         @Override
                         public void onSuccess() {
-
-
-                            // Log.d(TAG, "setRemoteDescription onSetSuccess");
                             System.out.println("setRemoteDescription onSetSuccess");
 
                             createAnswer(peerConnection, new CreateAnswerCallback() {
@@ -292,13 +343,7 @@ public class CallManager {
 
                         @Override
                         public void onFailure(String s) {
-
-
-                            // Log.d(TAG, "setRemoteDescription onCreateFailure " + error);
-                            System.out.println("setRemoteDescription onCreateFailure " + s);
-
-                            // Log.d(TAG, "setRemoteDescription onSetFailure " + error);
-                            System.out.println("setRemoteDescription onSetFailure " + s);
+                            System.err.println("setRemoteDescription onFailure  : " + s);
                         }
                     });
                 }
@@ -309,14 +354,6 @@ public class CallManager {
 
         @Override
         public void onIceCandidate(BigInteger handleId, JSONObject candidate) {
-//            try {
-//                if (!candidate.has("completed")) {
-//                    peerConnection.addIceCandidate(new IceCandidate(candidate.getString("sdpMid"),
-//                            candidate.getInt("sdpMLineIndex"), candidate.getString("candidate")));
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
         }
 
         @Override
@@ -355,7 +392,7 @@ public class CallManager {
         for (int i = 0; i < publishers.length(); i++) {
             try {
                 JSONObject publishObj = publishers.getJSONObject(i);
-                BigInteger feedId = new BigInteger(String.valueOf(publishObj.getBigInteger("id")));
+                BigInteger feedId = publishObj.getBigInteger("id");
                 String display = publishObj.getString("display");
 
                 janusClient.subscribeAttach(feedId);
@@ -426,20 +463,41 @@ public class CallManager {
             }
 
             @Override
-            public void onAddStream(MediaStream stream) {
+            public void onRemoveTrack(RTCRtpReceiver receiver) {
+                //  PeerConnectionObserver.super.onRemoveTrack(receiver);
+            }
 
-                System.out.println("onAddStream");
-                // stream.getAudioTracks()[0].addSink();
-//            stream.videoTracks.get(0).addSink(surfaceViewRendererRemote);
-                if (callback != null) {
-                    callback.onAddStream(stream);
+            @Override
+            public void onTrack(RTCRtpTransceiver transceiver) {
+                System.out.println("::::: on-Track :::::");
+
+                MediaStreamTrack track = transceiver.getReceiver().getTrack();
+                String kind = track.getKind();
+               /* if (kind.equals(MediaStreamTrack.AUDIO_TRACK_KIND) && audioTrackSink != null) {
+                    AudioTrack audioTrack = (AudioTrack) track;
+                    audioTrack.addSink(audioTrackSink);
+                }
+                else if (kind.equals(MediaStreamTrack.VIDEO_TRACK_KIND) && nonNull(videoTrackSink)) {
+                    VideoTrack videoTrack = (VideoTrack) track;
+                    videoTrack.addSink(videoTrackSink);
+                }*/
+                if (kind.equals(MediaStreamTrack.VIDEO_TRACK_KIND)) {
+                    VideoTrack videoTrack = (VideoTrack) track;
+                    videoTrack.addSink(frame -> {
+                        // sink data to the videoTrackSink video from
+
+                        if (callback != null) {
+                            callback.publishFrame(videoTrack, frame);
+                        }
+                    });
                 }
             }
 
             @Override
             public void onRemoveStream(MediaStream stream) {
 
-                System.out.println("onRemoveStream");
+                System.out.println("onRemoveStream () ");
+
                 if (callback != null) {
                     callback.onRemoveStream(stream);
                 }
@@ -466,32 +524,28 @@ public class CallManager {
     private void createOffer(RTCPeerConnection peerConnection, CreateOfferCallback callback) {
 
         RTCOfferOptions options = new RTCOfferOptions();
-        // peerConnection.createOffer(options, this);
-        System.err.println("panooo 1");
 
-
-        peerConnection.createOffer(  options, new CreateSessionDescriptionObserver() {
+        peerConnection.createOffer(options, new CreateSessionDescriptionObserver() {
             @Override
             public void onSuccess(RTCSessionDescription rtcSessionDescription) {
                 peerConnection.setLocalDescription(rtcSessionDescription, new SetSessionDescriptionObserver() {
 
                     @Override
                     public void onSuccess() {
-                        System.out.println("setLocalDescription success");
+                        System.out.println("xxxxxxxvvvv setLocalDescription success");
+                       /*
 
                         String payload = String.format("{\"janus\" : \"message\", \"transaction\" : \"1234\", \"apisecret\":\"%s\", \"body\" : {\"audio\" : false, \"video\" : false}, \"jsep\" : {\"type\" : \"%s\", \"sdp\" : \"%s\"}}",
                                 "apiSecret",
                                 rtcSessionDescription.sdpType.toString(),
                                 rtcSessionDescription.sdp.toString().trim().replace("\r\n", "\\n"));
-                        System.err.println(payload);
+                        System.err.println(payload);*/
                     }
 
                     @Override
                     public void onFailure(String error) {
-                        System.out.println("setLocalDescription failure");
-                        if (callback != null) {
-                            callback.onCreateFailed(error);
-                        }
+                        System.err.println("setLocalDescription failure" + error);
+
                     }
                 });
                 if (callback != null) {
@@ -500,8 +554,10 @@ public class CallManager {
             }
 
             @Override
-            public void onFailure(String s) {
-
+            public void onFailure(String error) {
+                if (callback != null) {
+                    callback.onCreateFailed(error);
+                }
             }
         });
     }
@@ -551,39 +607,24 @@ public class CallManager {
         return videoItem;
     }
 
-
-    interface CreateAnswerCallback {
-        void onSetAnswerSuccess(RTCSessionDescription sdp);
-
-        void onSetAnswerFailed(String error);
+    VideoItem addNewVideoItem(BigInteger userId, String display, RTCPeerConnection peerConnection, VideoTrack videoTrack) {
+        VideoItem videoItem = new VideoItem();
+        videoItem.setUserId(userId);
+        videoItem.setDisplay(display);
+        videoItem.setPeerConnection(peerConnection);
+        videoItem.setVideoTrack(videoTrack);
+        videoItemList.add(videoItem);
+        return videoItem;
     }
 
 
-    interface CreateOfferCallback {
-        void onCreateOfferSuccess(RTCSessionDescription sdp);
-
-        void onCreateFailed(String error);
-    }
-
-    interface CreatePeerConnectionCallback {
-        void onIceGatheringComplete();
-
-        void onIceCandidate(RTCIceCandidate candidate);
-
-        void onIceCandidatesRemoved(RTCIceCandidate[] candidates);
-
-        void onAddStream(MediaStream stream);
-
-        void onRemoveStream(MediaStream stream);
-    }
-
-    public static final FlowPane renderCallers(List<VideoItem> videoItemList, VideoTrack videoTrack){
+    public static FlowPane renderCallers(List<VideoItem> videoItemList, VideoTrack videoTrack) {
         FlowPane flowContainer = new FlowPane();
 
 
         videoItemList.forEach(caller -> {
             VideoView videoView = new VideoView();
-            Button videoBtn = new Button(caller.getDisplay() );
+            Button videoBtn = new Button(caller.getDisplay());
             videoBtn.setMnemonicParsing(false);
             videoBtn.getStyleClass().add("cat-button");
             videoBtn.setPrefWidth(160.0);
@@ -595,7 +636,7 @@ public class CallManager {
             videoBtn.setAlignment(Pos.CENTER);
             videoBtn.setContentDisplay(ContentDisplay.TOP);
 
-            videoView.resize(100,100);
+            videoView.resize(100, 100);
             videoBtn.setGraphic(videoView);
             videoBtn.setOnAction(e2 -> {
                 System.out.println("videoBtn.setOnAction");
@@ -607,7 +648,7 @@ public class CallManager {
         return flowContainer;
     }
 
-    void addViewItem(VideoTrack videoTrack) {
+    void addViewItem(VideoTrack videoTrack, boolean islocal) {
 
         VideoView localVideoView = new VideoView();
 
@@ -615,43 +656,46 @@ public class CallManager {
 
         centerRoot.getChildren().add(localVideoView);
         videoTrack.addSink(localVideoView::setVideoFrame);
+        //if(islocal){
+            /*try {
+                videoSource.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
+        // }
 
+        System.out.println("xxxxxxx  addViewItem");
+
+    }
+
+    public static FlowPane renderACaller(VideoItem videoItem, VideoTrack videoTrack, VideoDeviceSource videoSource) {
+        FlowPane flowContainer = new FlowPane();
+
+        VideoView videoView = new VideoView();
+        Button videoBtn = new Button(videoItem == null ? "mewadii" : videoItem.getDisplay());
+        videoBtn.setMnemonicParsing(false);
+        videoBtn.getStyleClass().add("cat-button");
+        videoBtn.setPrefWidth(160.0);
+        videoBtn.setMaxWidth(160.0);
+        videoBtn.setPrefHeight(200.0);
+        videoBtn.setMaxHeight(200.0);
+        videoBtn.setWrapText(true);
+        videoBtn.setTextAlignment(TextAlignment.CENTER);
+        videoBtn.setAlignment(Pos.CENTER);
+        videoBtn.setContentDisplay(ContentDisplay.TOP);
+
+        videoView.resize(100, 100);
+        videoBtn.setGraphic(videoView);
+        videoBtn.setOnAction(e2 -> {
+            System.out.println("videoBtn.setOnAction");
+        });
+        videoTrack.addSink(videoView::setVideoFrame);
+        flowContainer.getChildren().add(videoBtn);
         try {
             videoSource.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }
-
-  public static  FlowPane renderACaller(VideoItem videoItem, VideoTrack videoTrack, VideoDeviceSource videoSource){
-        FlowPane flowContainer = new FlowPane();
-
-            VideoView videoView = new VideoView();
-            Button videoBtn = new Button(videoItem ==null ? "mewadii" :videoItem.getDisplay() );
-            videoBtn.setMnemonicParsing(false);
-            videoBtn.getStyleClass().add("cat-button");
-            videoBtn.setPrefWidth(160.0);
-            videoBtn.setMaxWidth(160.0);
-            videoBtn.setPrefHeight(200.0);
-            videoBtn.setMaxHeight(200.0);
-            videoBtn.setWrapText(true);
-            videoBtn.setTextAlignment(TextAlignment.CENTER);
-            videoBtn.setAlignment(Pos.CENTER);
-            videoBtn.setContentDisplay(ContentDisplay.TOP);
-
-            videoView.resize(100,100);
-            videoBtn.setGraphic(videoView);
-            videoBtn.setOnAction(e2 -> {
-                System.out.println("videoBtn.setOnAction");
-            });
-            videoTrack.addSink(videoView::setVideoFrame);
-            flowContainer.getChildren().add(videoBtn);
-      try {
-          videoSource.start();
-      } catch (Exception e) {
-          e.printStackTrace();
-      }
 
         return flowContainer;
     }

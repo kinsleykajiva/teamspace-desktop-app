@@ -133,7 +133,7 @@
       <padding>
          <Insets bottom="5.0" top="5.0" />
       </padding></HBox>
-   <VBox layoutX="1052.0" layoutY="109.0" prefHeight="533.0" prefWidth="222.0" style="-fx-background-color: #f4f4fa; -fx-background-radius: 20;" AnchorPane.bottomAnchor="77.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="109.0">
+   <VBox fx:id="sideProfileVBox" layoutX="1052.0" layoutY="109.0" prefHeight="533.0" prefWidth="222.0" style="-fx-background-color: #f4f4fa; -fx-background-radius: 20;" AnchorPane.bottomAnchor="77.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="109.0">
       <children>
          <GNAvatarView prefHeight="60.0" prefWidth="60.0">
             <image>

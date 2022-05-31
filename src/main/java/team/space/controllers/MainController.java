@@ -3,6 +3,8 @@ package team.space.controllers;
 import com.jfoenix.controls.JFXSnackbar;
 import dev.onvoid.webrtc.PeerConnectionFactory;
 import dev.onvoid.webrtc.RTCPeerConnection;
+import dev.onvoid.webrtc.media.MediaDevices;
+import dev.onvoid.webrtc.media.video.VideoDevice;
 import dev.onvoid.webrtc.media.video.VideoDeviceSource;
 import dev.onvoid.webrtc.media.video.VideoTrack;
 import io.github.palexdev.materialfx.font.MFXFontIcon;
@@ -39,6 +41,7 @@ import team.space.utils.StageManager;
 import team.space.webrtc.janus.Entities.Room;
 import team.space.webrtc.janus.Entities.VideoItem;
 import team.space.webrtc.janus.utils.JanusClient;
+import team.space.webrtc.janus.utils.VideoView;
 import team.space.webrtc.webrtcutils.CallManager;
 
 import java.math.BigInteger;
@@ -53,7 +56,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import static team.space.utils.ScreenController.loadURL;
 
 
-public class MainController    implements Initializable, ApplicationEvents {
+public class MainController implements Initializable, ApplicationEvents {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Stage stage;
     private double xOffset = 0;
@@ -61,7 +64,7 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML
     public AnchorPane rootPane;
     @FXML
-    public StackPane  contentPaneCalling1;
+    public StackPane contentPaneCalling1;
 
     @FXML
     public StackPane contentPane;
@@ -73,26 +76,35 @@ public class MainController    implements Initializable, ApplicationEvents {
     @FXML
     public MFXFontIcon maximiseScreenIcon;
 
-    private MediaUtils  mediaUtils = new MediaUtils();
+    private MediaUtils mediaUtils = new MediaUtils();
     @FXML
-    public VBox mainNav;
-    @FXML public ImageView imgHome ,imgDropCall1 ,imgRingRingUserIcon1 , imgMic1, imgVideConvert1;
-    @FXML public ImageView imgNavChats;
-    @FXML public ImageView imgNavCalender;
-    @FXML public ImageView imgInBox;
-    @FXML public ImageView imgNavSettings;
-    @FXML public ImageView imgNavNotifications;
-    @FXML public ImageView imgNavLogOut;
-    @FXML public Label txtCaller1;
-    private JFXSnackbar snackbar ;
- /*   @FXML public ImageView imgInBox;
-    @FXML public ImageView imgInBox;*/
+    public VBox mainNav, sideProfileVBox;
+    @FXML
+    public ImageView imgHome, imgDropCall1, imgRingRingUserIcon1, imgMic1, imgVideConvert1;
+    @FXML
+    public ImageView imgNavChats;
+    @FXML
+    public ImageView imgNavCalender;
+    @FXML
+    public ImageView imgInBox;
+    @FXML
+    public ImageView imgNavSettings;
+    @FXML
+    public ImageView imgNavNotifications;
+    @FXML
+    public ImageView imgNavLogOut;
+    @FXML
+    public Label txtCaller1;
+    private JFXSnackbar snackbar;
+    /*   @FXML public ImageView imgInBox;
+       @FXML public ImageView imgInBox;*/
     private Contact contactInCurrentView;
 
     public MainController() {
         EventBus.getDefault().register(this);
     }
-private CallManager callManager;
+
+    private CallManager callManager;
 
     // UI updates must run on MainThread
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -101,43 +113,42 @@ private CallManager callManager;
 
         System.out.println("Received event: " + event.getEventType());
 
-        if( event.getEventType().equals(MessageEvent.MESSAGE_EVENT_MAKE_OUT_GOING_CALL_ALERT) ){
-           if( event.getObject() instanceof Contact){
-               contentPaneCalling1.setVisible(true);
-               // textField.setText(event.message);
-               mediaUtils.playIncomingCallAlert();
-               txtCaller1.setText( ((Contact) event.getObject()).getFullName() );
+        if (event.getEventType().equals(MessageEvent.MESSAGE_EVENT_MAKE_OUT_GOING_CALL_ALERT)) {
+            if (event.getObject() instanceof Contact) {
+                contentPaneCalling1.setVisible(true);
+                // textField.setText(event.message);
+                //   mediaUtils.playIncomingCallAlert();
+                txtCaller1.setText(((Contact) event.getObject()).getFullName());
 
-               FadeTransition ft = new FadeTransition();
-               ft.setDuration(Duration.millis(200));
-               ft.setNode(contentPaneCalling1);
-               ft.setFromValue(0);
-               ft.setToValue(1);
-               ft.play();
-           }
+                FadeTransition ft = new FadeTransition();
+                ft.setDuration(Duration.millis(200));
+                ft.setNode(contentPaneCalling1);
+                ft.setFromValue(0);
+                ft.setToValue(1);
+                ft.play();
+            }
 
         }
 
     }
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initClickListener();
-        callManager = new CallManager(contentPaneCalling1);
-        contentPaneCalling1.setVisible(false);
+        callManager = new CallManager(sideProfileVBox);
+        // contentPaneCalling1.setVisible(false);
         snackbar = new JFXSnackbar(rootPane);
         stage = StageManager.getStage();
-        for(Node child : mainNav.getChildren()) {
+        for (Node child : mainNav.getChildren()) {
             VBox.setVgrow(child, Priority.ALWAYS);
         }
         final int[] loadedCounter = {0};
         MFXLoader loader = new MFXLoader();
-        loader.addView(MFXLoaderBean.of("MESSAGE_CONTROLLER", loadURL("/views/include_chat_parent/incl.chat_parent.fxml")).setControllerFactory(c->new ChatPArentViewController(stage,this)).setDefaultRoot(false).get());
-        loader.addView(MFXLoaderBean.of("CALENDER_CONTROLLER", loadURL("/views/calender/inc.calender.fxml")).setControllerFactory(c->new CalenderViewController(stage)).setDefaultRoot(false).get());
-        loader.addView(MFXLoaderBean.of("HOME_CONTROLLER", loadURL("/views/homecontroller.fxml")).setControllerFactory(c->new HomeController(stage,this)).setDefaultRoot(true).get());
-        loader.addView(MFXLoaderBean.of("SETTINGS_CONTROLLER", loadURL("/views/settings/settings.fxml")).setControllerFactory(c->new SettingsViewController()).setDefaultRoot(false).get());
+        loader.addView(MFXLoaderBean.of("MESSAGE_CONTROLLER", loadURL("/views/include_chat_parent/incl.chat_parent.fxml")).setControllerFactory(c -> new ChatPArentViewController(stage, this)).setDefaultRoot(false).get());
+        loader.addView(MFXLoaderBean.of("CALENDER_CONTROLLER", loadURL("/views/calender/inc.calender.fxml")).setControllerFactory(c -> new CalenderViewController(stage)).setDefaultRoot(false).get());
+        loader.addView(MFXLoaderBean.of("HOME_CONTROLLER", loadURL("/views/homecontroller.fxml")).setControllerFactory(c -> new HomeController(stage, this)).setDefaultRoot(true).get());
+        loader.addView(MFXLoaderBean.of("SETTINGS_CONTROLLER", loadURL("/views/settings/settings.fxml")).setControllerFactory(c -> new SettingsViewController()).setDefaultRoot(false).get());
 
         loader.setOnLoadedAction(beans -> beans.forEach(bean -> {
 
@@ -152,20 +163,48 @@ private CallManager callManager;
                 contentPane.getChildren().setAll(bean.getRoot());
             }
             loadedCounter[0]++;
-            if(loadedCounter[0] == beans.size()) {
-                System.out.println("Views are  ready " );
+            if (loadedCounter[0] == beans.size()) {
+                System.out.println("Views are  ready ");
                 mediaUtils.playWelcomeAlert();
                 JFXSnackbar.SnackbarEvent snackbarEvent = new JFXSnackbar.SnackbarEvent(new Label("Views are ready"), Duration.seconds(13.33), null);
                 snackbar.enqueue(snackbarEvent);
             }
-           // System.out.println("Loaded view: Done - " +loadedCounter[0] );
+            // System.out.println("Loaded view: Done - " +loadedCounter[0] );
 
         }));
 
         loader.start();
 // mediaUtils
+        callManager.initJanusWebrtcSession();
 
 
+    }
+
+    void cameraTestLocal() {
+        var peerConnectionFactory = new PeerConnectionFactory();
+        var videoSource = new VideoDeviceSource();
+        VideoDevice device = MediaDevices.getVideoCaptureDevices().get(0);
+        videoSource.setVideoCaptureDevice(device);
+        videoSource.setVideoCaptureCapability(MediaDevices.getVideoCaptureCapabilities(device).get(0)); //I believe index 0 is auto-resolution, 17 is 1280x720 @ 10fps
+
+        var videoTrack = peerConnectionFactory.createVideoTrack("CAM", videoSource);
+
+        VideoView videoView = new VideoView();
+        videoView.resize(640, 480);
+        videoTrack.addSink(videoView::setVideoFrame);
+
+        VideoView videoView1 = new VideoView();
+        videoView1.resize(640, 480);
+        videoTrack.addSink(videoView1::setVideoFrame);
+
+        sideProfileVBox.getChildren().add(videoView);
+        sideProfileVBox.getChildren().add(videoView1);
+
+        try {
+            videoSource.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initClickListener() {
@@ -192,7 +231,6 @@ private CallManager callManager;
         });
 
 
-
         contentPane.setOnMouseDragged(event -> {
             stage.setX(event.getScreenX() - xOffset);
             stage.setY(event.getScreenY() - yOffset);
@@ -201,7 +239,7 @@ private CallManager callManager;
 
         imgDropCall1.setOnMouseClicked(event -> {
             System.out.println("dragged");
-            mediaUtils.stopIncomingCallAlert();
+            // mediaUtils.stopIncomingCallAlert();
 
             contentPaneCalling1.setVisible(false);
         });
@@ -217,7 +255,6 @@ private CallManager callManager;
             mediaUtils.stopIncomingCallAlert();
 
             contentPaneCalling1.setVisible(false);
-
 
 
             FadeTransition ft = new FadeTransition();
