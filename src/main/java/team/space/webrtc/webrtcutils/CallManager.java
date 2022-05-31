@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.layout.FlowPane;
@@ -137,9 +138,19 @@ public class CallManager {
                 }
                 if (c.wasRemoved()) {
                     for (VideoItem item : c.getRemoved()) {
-                        if (item.getDisplay().equals(userName)) {
+                        System.out.println("removing local video view" + item.getUserId());
+                        //  centerRoot.getChildren().remove(item);
+                        Node target = centerRoot.getChildren().stream()
+                                .filter(node -> node instanceof VideoView &&
+                                        !node.getId().equals(null) && !node.getId().equals("null") &&
+                                        node.getId().equals(String.valueOf(item.getUserId())))
+                                .findFirst()
+                                .orElse(null);
+                        if (target != null) {
                             Platform.runLater(() -> {
-                                System.out.println("removing local video view");
+                                System.out.println("removing local video view Node");
+                                centerRoot.getChildren().remove(target);
+
                             });
                         }
                     }
@@ -245,8 +256,8 @@ public class CallManager {
                         Long unPublishdUserId = msg.getLong("unpublished");
                         System.out.println("unPublishdUserId  " + unPublishdUserId);
                     } else if (msg.has("leaving")) {
-                        System.out.println("leaving - ###");
-                        BigInteger leavingUserId = new BigInteger(msg.getString("leaving"));
+                        System.out.println("leaving - ### userId :  "  + msg);
+                        BigInteger leavingUserId = (msg.getBigInteger("leaving"));
                         room.removePublisherById(leavingUserId);
                         Platform.runLater(() -> {
 
@@ -256,6 +267,7 @@ public class CallManager {
                                 VideoItem next = it.next();
                                 if (leavingUserId.equals(next.getUserId())) {
                                     it.remove();
+                                   // videoItemList.remove(next);
                                 }
                                 index++;
                             }
@@ -318,6 +330,11 @@ public class CallManager {
                         public void onRemoveStream(MediaStream stream) {
                             // videoItem.videoTrack = null;
                             videoItem.setVideoTrack(null);
+
+                            videoItemList
+                                    .stream()
+                                    .filter(item -> item.getUserId().equals(videoItem.getUserId()))
+                                    .forEach(item -> item.setVideoTrack(null)  );
                         }
                     });
 
