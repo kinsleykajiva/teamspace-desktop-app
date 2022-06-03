@@ -60,19 +60,6 @@ public class BaseApplication extends Application {
         EventBus.getDefault().register(this);
 
 
-
-       /* Box<LoginInCache> loginInCacheBox = DBObjectManager.getinstance().getStore().boxFor(LoginInCache.class);
-        Query<LoginInCache> checkExistsquery1 = loginInCacheBox.query().build();*/
-
-      /*  if (checkExistsquery1.find().size() > 0) {
-            System.out.println("LoginInCache exists --- "  + checkExistsquery1.findFirst());
-           // return checkExistsquery1.find().get(0);
-        }else{
-            System.out.println("LoginInCache not exists");
-           // return null;
-        }*/
-
-
         Shared.LOGGED_USER = DBManager.getinstance().getCachedUser();
 // Pass in the app's main stage, and path to the icon image
         FXTrayIcon icon = new FXTrayIcon(stage, getClass().getResource("/images/group-chat.png"));
@@ -105,8 +92,8 @@ public class BaseApplication extends Application {
                     setPrefHeight(100);
                 }
             });
-            initWebRTC();
-            isMediaReady();
+           // initWebRTC();
+          //  isMediaReady();
         });
 
 

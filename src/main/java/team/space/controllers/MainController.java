@@ -29,6 +29,7 @@ import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import team.space.controllers.filesmanager.FileManagerViewController;
 import team.space.controllers.includecalender.CalenderViewController;
 import team.space.controllers.includechat.ChatPArentViewController;
 import team.space.controllers.settings.SettingsViewController;
@@ -84,7 +85,7 @@ public class MainController implements Initializable, ApplicationEvents {
     @FXML
     public ImageView imgNavChats;
     @FXML
-    public ImageView imgNavCalender;
+    public ImageView imgNavCalender ,imgNavFiles;
     @FXML
     public ImageView imgInBox;
     @FXML
@@ -137,7 +138,7 @@ public class MainController implements Initializable, ApplicationEvents {
     public void initialize(URL location, ResourceBundle resources) {
         initClickListener();
         callManager = new CallManager(sideProfileVBox);
-        // contentPaneCalling1.setVisible(false);
+         contentPaneCalling1.setVisible(false);
         snackbar = new JFXSnackbar(rootPane);
         stage = StageManager.getStage();
         for (Node child : mainNav.getChildren()) {
@@ -149,6 +150,7 @@ public class MainController implements Initializable, ApplicationEvents {
         loader.addView(MFXLoaderBean.of("CALENDER_CONTROLLER", loadURL("/views/calender/inc.calender.fxml")).setControllerFactory(c -> new CalenderViewController(stage)).setDefaultRoot(false).get());
         loader.addView(MFXLoaderBean.of("HOME_CONTROLLER", loadURL("/views/homecontroller.fxml")).setControllerFactory(c -> new HomeController(stage, this)).setDefaultRoot(true).get());
         loader.addView(MFXLoaderBean.of("SETTINGS_CONTROLLER", loadURL("/views/settings/settings.fxml")).setControllerFactory(c -> new SettingsViewController()).setDefaultRoot(false).get());
+        loader.addView(MFXLoaderBean.of("FILES_CONTROLLER", loadURL("/views/include_files_manager/include.files_parent.fxml")).setControllerFactory(c -> new FileManagerViewController()).setDefaultRoot(false).get());
 
         loader.setOnLoadedAction(beans -> beans.forEach(bean -> {
 
@@ -157,6 +159,7 @@ public class MainController implements Initializable, ApplicationEvents {
                 case "SETTINGS_CONTROLLER" -> imgNavSettings.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
                 case "HOME_CONTROLLER" -> imgHome.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
                 case "CALENDER_CONTROLLER" -> imgNavCalender.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
+                case "FILES_CONTROLLER" -> imgNavFiles.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
 
             }
             if (bean.isDefaultView()) {
@@ -175,7 +178,7 @@ public class MainController implements Initializable, ApplicationEvents {
 
         loader.start();
 // mediaUtils
-        callManager.initJanusWebrtcSession();
+       // callManager.initJanusWebrtcSession();
 
 
     }
