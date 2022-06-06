@@ -79,7 +79,7 @@ public class MainController implements Initializable, ApplicationEvents {
 
     private MediaUtils mediaUtils = new MediaUtils();
     @FXML
-    public VBox mainNav, sideProfileVBox;
+    public VBox mainNav, sideProfileVBox ,imgNavSettingsVBox ,imgNavFilesVBox ,imgNavNotificationsVBox,   imgNavChatsVBox, imgNavCalenderVBox, imgHomeVBox;
     @FXML
     public ImageView imgHome, imgDropCall1, imgRingRingUserIcon1, imgMic1, imgVideConvert1;
     @FXML
@@ -132,7 +132,7 @@ public class MainController implements Initializable, ApplicationEvents {
         }
 
     }
-
+    List<VBox> vBoxes ;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -155,11 +155,23 @@ public class MainController implements Initializable, ApplicationEvents {
         loader.setOnLoadedAction(beans -> beans.forEach(bean -> {
 
             switch (bean.getViewName()) {
-                case "MESSAGE_CONTROLLER" -> imgNavChats.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
-                case "SETTINGS_CONTROLLER" -> imgNavSettings.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
-                case "HOME_CONTROLLER" -> imgHome.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
-                case "CALENDER_CONTROLLER" -> imgNavCalender.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
-                case "FILES_CONTROLLER" -> imgNavFiles.setOnMouseClicked(event -> contentPane.getChildren().setAll(bean.getRoot()));
+                case "MESSAGE_CONTROLLER" -> imgNavChats.setOnMouseClicked(event -> {
+                    contentPane.getChildren().setAll(bean.getRoot());
+                    setSelcted(imgNavChatsVBox);
+                });
+                case "SETTINGS_CONTROLLER" -> imgNavSettings.setOnMouseClicked(event -> {
+                    contentPane.getChildren().setAll(bean.getRoot());
+                    setSelcted(imgNavSettingsVBox);
+                });
+                case "HOME_CONTROLLER" -> imgHome.setOnMouseClicked(event -> {
+                    contentPane.getChildren().setAll(bean.getRoot());
+                    setSelcted(imgHomeVBox);
+                });
+                case "CALENDER_CONTROLLER" -> imgNavCalender.setOnMouseClicked(event ->  {contentPane.getChildren().setAll(bean.getRoot()); setSelcted(imgNavCalenderVBox);    });
+                case "FILES_CONTROLLER" -> imgNavFiles.setOnMouseClicked(event -> {
+                    contentPane.getChildren().setAll(bean.getRoot());
+                    setSelcted(imgNavFilesVBox);
+                });
 
             }
             if (bean.isDefaultView()) {
@@ -179,8 +191,21 @@ public class MainController implements Initializable, ApplicationEvents {
         loader.start();
 // mediaUtils
        // callManager.initJanusWebrtcSession();
+        vBoxes = List.of( imgNavCalenderVBox , imgNavChatsVBox, imgHomeVBox ,  imgNavNotificationsVBox ,imgNavSettingsVBox ,  imgNavFilesVBox);
+
+    }
+    void setSelcted (VBox tagrget){
 
 
+
+        vBoxes.forEach(vBox -> {
+            if (vBox.equals(tagrget)){
+                vBox.setStyle("-fx-background-color:  #424395");
+            }else {
+                vBox.setStyle("-fx-background-color: transparent");
+            }
+        });
+        //tagrget.setStyle("-fx-border-color: red");
     }
 
     void cameraTestLocal() {
