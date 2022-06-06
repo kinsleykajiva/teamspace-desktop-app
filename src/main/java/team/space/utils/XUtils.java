@@ -16,6 +16,11 @@ import static java.util.Objects.isNull;
 
 public class XUtils {
 
+
+    public static String getFileNameFromUrl(String url){
+        return url.substring(url.lastIndexOf('/')+1, url.length());
+    }
+
     private static Matcher match;
     private final static Pattern EMAIL_PATTERN = Pattern.compile("^[_A-Za-z0-9-.]+([A-Za-z0-9-_.]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$");
     private final static  Pattern USERNAME_PATTERN = Pattern.compile("[a-zA-Z0-9_.]{3,20}");
@@ -152,5 +157,32 @@ public class XUtils {
      */
     public static boolean checkStringLength(String str , int min , int max){
         return !(str.length() > max || str.length() < min );
+    }
+
+
+    public static void printError(String className, int lineNumber, String message) {
+        System.out.println();
+        System.out.println("Error occurred in class : " + className + " at line : " + lineNumber);
+        System.out.println("------------------------------------------------------------" +
+                "Error Message Start" +
+                "------------------------------------------------------------");
+        System.out.println(message);
+        System.out.println("------------------------------------------------------------" +
+                "Error Message End" +
+                "------------------------------------------------------------");
+        System.out.println();
+    }
+
+    public static void printLogic(String className, int lineNumber, String message) {
+        System.out.println();
+        System.out.println("Printing from class : " + className + " at line : " + lineNumber);
+        System.out.println("------------------------------------------------------------" +
+                "Message Start" +
+                "------------------------------------------------------------");
+        System.out.println(message);
+        System.out.println("------------------------------------------------------------" +
+                "Message End" +
+                "------------------------------------------------------------");
+        System.out.println();
     }
 }

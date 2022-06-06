@@ -3,20 +3,11 @@ package team.space.controllers.filesmanager.model.filelistview;
 import javafx.scene.image.Image;
 import team.space.controllers.filesmanager.constants.Dimensions;
 import team.space.controllers.filesmanager.constants.Icons;
-import team.space.controllers.filesmanager.model.FileDetail;
 import team.space.controllers.filesmanager.model.filegridview.GridEntry;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowButtonShare;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowImageView;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowLabel;
-//import team.space.controllers.filesmanager.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;
-/*import win95.constants.Dimensions;
-import win95.constants.Icons;
-import win95.model.FileDetail;
-import win95.model.filegridview.GridEntry;
-import win95.model.filelistview.listViewelements.RowButtonShare;
-import win95.model.filelistview.listViewelements.RowImageView;
-import win95.model.filelistview.listViewelements.RowLabel;
-import win95.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;*/
+import team.space.requests.files.getfiles.FileObject;
 
 import java.io.File;
 
@@ -26,13 +17,14 @@ public class ListEntry {
     private RowImageView rowImageView;
     private RowLabel rowNameLabel, rowCount;
     private RowButtonShare delete, open, share;
-    private FileDetail fileDetail;
+    private FileObject fileDetail;
 
 
-    public ListEntry(FileDetail fileDetail) {
+    public ListEntry(FileObject fileDetail) {
         this.fileDetail = fileDetail;
-        this.name = fileDetail.getFileName();
-        this.url = Icons.getFileIconPath(fileDetail.getFileExtension());
+        this.name = fileDetail.getName();
+        System.out.println("fileDetail.getMimeType() = " + fileDetail.getDetail().getMimeType());
+        this.url = Icons.getFileIconPath(fileDetail.getDetail().getMimeType());
 
         rowNameLabel = new RowLabel(fileDetail);
         rowNameLabel.setMaxWidth(1000);
@@ -117,11 +109,11 @@ public class ListEntry {
         this.share = share;
     }
 
-    public FileDetail getFileDetail() {
+    public FileObject getFileDetail() {
         return fileDetail;
     }
 
-    public void setFileDetail(FileDetail fileDetail) {
+    public void setFileDetail(FileObject fileDetail) {
         this.fileDetail = fileDetail;
     }
 

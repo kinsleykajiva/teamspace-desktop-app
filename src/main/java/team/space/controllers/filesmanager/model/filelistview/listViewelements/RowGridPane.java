@@ -1,24 +1,25 @@
 package team.space.controllers.filesmanager.model.filelistview.listViewelements;
 
 import javafx.scene.layout.GridPane;
-import team.space.controllers.filesmanager.model.FileDetail;
+import team.space.requests.files.getfiles.FileObject;
+//import team.space.requests.files.fetchfiles.FileObject;
 //import win95.model.FileDetail;
 
 public class RowGridPane extends GridPane {
-    private final FileDetail fileDetail;
+    private final FileObject fileDetail;
 
-    public RowGridPane(FileDetail fileDetail) {
+    public RowGridPane(FileObject fileDetail) {
         this.fileDetail = fileDetail;
     }
 
-    public FileDetail getFileDetail() {
+    public FileObject getFileDetail() {
         return fileDetail;
     }
 
 
     @Override
     public String toString() {
-        return "{{" + fileDetail.getFileName() + "}}" + '\n' +
-                "{{" + fileDetail.getFilePath() + "}}" + '\n';
+        return "{{" + fileDetail.getName() + "}}" + '\n' +
+                "{{" + fileDetail.getDetail().getUrl() + "}}" + '\n';
     }
 }

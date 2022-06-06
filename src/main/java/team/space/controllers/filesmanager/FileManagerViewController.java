@@ -2,12 +2,11 @@ package team.space.controllers.filesmanager;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,27 +16,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import team.space.controllers.filesmanager.constants.*;
-import team.space.controllers.filesmanager.model.FileDetail;
 import team.space.controllers.filesmanager.model.filegridview.GridEntry;
 import team.space.controllers.filesmanager.model.filelistview.CellFactory;
 import team.space.controllers.filesmanager.model.filelistview.ListEntry;
 import team.space.controllers.filesmanager.model.filelistview.PathStack;
-import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowImageView;
+import team.space.requests.files.getfiles.Child;
+import team.space.requests.files.getfiles.FileObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static javafx.application.Application.setUserAgentStylesheet;
 import static team.space.controllers.filesmanager.constants.CommonData.CURRENT_DIRECTORY;
+import static team.space.network.ReqFilesHandler.getFilesMap;
+import static team.space.network.ReqFilesHandler.listMyFiles;
+
 
 public class FileManagerViewController implements Initializable {
     @FXML
@@ -46,6 +48,9 @@ public class FileManagerViewController implements Initializable {
     private ScrollPane gridViewScrollPane;
     @FXML
     private FlowPane gridView;
+
+  @FXML
+    private ImageView previousDirectoryButton;
 
 
 
@@ -58,28 +63,28 @@ public class FileManagerViewController implements Initializable {
     final private ObservableList<ListEntry> observableList = FXCollections.observableArrayList();
     final private ArrayList<GridEntry> gridObjectList = new ArrayList<>();
     private LogicConstants.SortingType sortingType = LogicConstants.SortingType.BY_DEFAULT;
-    Comparator<ListEntry> size_desc = (o2, o1) -> o1.getFileDetail().getSizeInByte().toLowerCase().compareTo(o2.getFileDetail().getSizeInByte().toLowerCase());
+//    Comparator<ListEntry> size_desc = (o2, o1) -> o1.getFileDetail().getSizeInByte().toLowerCase().compareTo(o2.getFileDetail().getSizeInByte().toLowerCase());
 
-    Comparator<ListEntry> size_inc = (o2, o1) -> o2.getFileDetail().getSizeInByte().toLowerCase().compareTo(o1.getFileDetail().getSizeInByte().toLowerCase());
+//    Comparator<ListEntry> size_inc = (o2, o1) -> o2.getFileDetail().getSizeInByte().toLowerCase().compareTo(o1.getFileDetail().getSizeInByte().toLowerCase());
 
-    Comparator<ListEntry> name_desc = (o2, o1) -> o1.getFileDetail().getFileName().toLowerCase().compareTo(o2.getFileDetail().getFileName().toLowerCase());
+    Comparator<ListEntry> name_desc = (o2, o1) -> o1.getFileDetail().getDetail().getOriginalFilename().toLowerCase().compareTo(o2.getFileDetail().getDetail().getOriginalFilename().toLowerCase());
 
-    Comparator<ListEntry> name_inc = (o2, o1) -> o2.getFileDetail().getFileName().toLowerCase().compareTo(o1.getFileDetail().getFileName().toLowerCase());
+    Comparator<ListEntry> name_inc = (o2, o1) -> o2.getFileDetail().getDetail().getOriginalFilename().toLowerCase().compareTo(o1.getFileDetail().getDetail().getOriginalFilename().toLowerCase());
 
-    Comparator<ListEntry> access_desc = (o2, o1) -> o1.getFileDetail().getLastAccessTime().toLowerCase().compareTo(o2.getFileDetail().getLastAccessTime().toLowerCase());
+    //Comparator<ListEntry> access_desc = (o2, o1) -> o1.getFileDetail().getLastAccessTime().toLowerCase().compareTo(o2.getFileDetail().getLastAccessTime().toLowerCase());
 
-    Comparator<ListEntry> access_inc = (o2, o1) -> o2.getFileDetail().getLastAccessTime().toLowerCase().compareTo(o1.getFileDetail().getLastAccessTime().toLowerCase());
+    // Comparator<ListEntry> access_inc = (o2, o1) -> o2.getFileDetail().getLastAccessTime().toLowerCase().compareTo(o1.getFileDetail().getLastAccessTime().toLowerCase());
 
     void sortRows(LogicConstants.SortingType sortingType) {
         if (this.sortingType != sortingType) {
             if (sortingType == LogicConstants.SortingType.BY_ACCESS_DESC) {
-                FXCollections.sort(observableList, access_desc);
+               /// FXCollections.sort(observableList, access_desc);
             } else if (sortingType == LogicConstants.SortingType.BY_ACCESS_INC) {
-                FXCollections.sort(observableList, access_inc);
+            //    FXCollections.sort(observableList, access_inc);
             } else if (sortingType == LogicConstants.SortingType.BY_SIZE_DESC) {
-                FXCollections.sort(observableList, size_desc);
+            //    FXCollections.sort(observableList, size_desc);
             } else if (sortingType == LogicConstants.SortingType.BY_SIZE_INC) {
-                FXCollections.sort(observableList, size_inc);
+              //  FXCollections.sort(observableList, size_inc);
             } else if (sortingType == LogicConstants.SortingType.BY_NAME_DESC) {
                 FXCollections.sort(observableList, name_desc);
             } else if (sortingType == LogicConstants.SortingType.BY_NAME_INC) {
@@ -111,11 +116,35 @@ public class FileManagerViewController implements Initializable {
             BUTTON_PRESSED = "NONE";
         }*/
     }
-   // @FXML
-    void previousDirectory(ActionEvent event) throws IOException {
+    @FXML
+    void refreshFolderEvent(ActionEvent event) throws IOException {
+
+    }
+
+
+   public  void previousDirectory()  {
         System.out.println("Previous directory button pressed");
         BUTTON_PRESSED = "PREVIOUS";
-       /* FileDetail previousDirectory = PathStack.getPreviousDirectory();
+            List<FileObject> previousDirectory = PathStack.getPreviousDirectory();
+            if (previousDirectory == null) {
+                BUTTON_PRESSED = "NONE";
+                System.out.println("PathStack.getPreviousDirectory() return null ");
+                return;
+            }
+          //  List<FileObject> filesList = new ArrayList<>();
+            /*for (Child file : previousDirectory) {
+                FileObject fileObject1 = new FileObject();
+                fileObject1.setDetail(file.getDetail());
+                fileObject1.setName(file.getName());
+                fileObject1.setChildren(file.getChildren());
+                filesList.add(fileObject1);
+            }*/
+            if (updateView(previousDirectory)) {
+                // preview.getChildren().clear();
+            } else {
+                BUTTON_PRESSED = "NONE";
+            }
+       /*
         if (previousDirectory == null) {
             BUTTON_PRESSED = "NONE";
             System.out.println("PathStack.getPreviousDirectory() return null ");
@@ -128,7 +157,7 @@ public class FileManagerViewController implements Initializable {
         }*/
     }
 
-    public void showPreview(FileDetail fileDetail) {
+    public void showPreview(FileObject fileDetail) {
 
 
     }
@@ -186,11 +215,12 @@ public class FileManagerViewController implements Initializable {
         observableList.add(listEntry);
     }
 
-    public boolean updateView(FileDetail fileDetail) {
-        if (fileDetail == null) return false;
-        File parentPath = fileDetail.getFile();
+    public boolean updateView(List<FileObject> files) {
+       //  if (files == null) return false;
+      //  File parentPath = fileDetail.get();
 
-        File[] files = parentPath.listFiles();
+     //   List<FileObject> files = getFilesMap().get(fileDetail.getFolder());
+        //parentPath.listFiles();
         if (files == null) {
            /* LogsPrinter.printLogic("Controller", 157,
                     "parent Path list files give null (invalid path/some other error");*/
@@ -198,26 +228,34 @@ public class FileManagerViewController implements Initializable {
         }
         if (BUTTON_PRESSED.equals("NEXT")) {
             PathStack.setPreviousDirectory(CURRENT_DIRECTORY);
+            System.err.println("PathStack.setNextDirectory(NEXT);");
             BUTTON_PRESSED = "NONE";
-            CURRENT_DIRECTORY = fileDetail;
+            CURRENT_DIRECTORY = files;
         } else if (BUTTON_PRESSED.equals("PREVIOUS")) {
             PathStack.setNextDirectory(CURRENT_DIRECTORY);
+            System.err.println("PathStack.setNextDirectory(CURRENT_DIRECTORY);");
             BUTTON_PRESSED = "NONE";
-            CURRENT_DIRECTORY = fileDetail;
+            CURRENT_DIRECTORY = files;
         }
         observableList.clear();
         gridView.getChildren().clear();
         gridObjectList.clear();
-        for (File file : files) {
+        files.forEach(file->{
+            // FileObject inFileDetail = new FileObject(file);
+            ListEntry listEntry = new ListEntry(file);
+            GridEntry gridEntry = new GridEntry(listEntry);
+            updateView(gridEntry);
+        });
+        /*for (File file : files) {
             try {
-                FileDetail inFileDetail = new FileDetail(file);
+                FileObject inFileDetail = new FileObject(file);
                 ListEntry listEntry = new ListEntry(inFileDetail);
                 GridEntry gridEntry = new GridEntry(listEntry);
                 updateView(gridEntry);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
         System.out.println(observableList.toString());
         System.out.println(gridObjectList.toString());
@@ -225,10 +263,31 @@ public class FileManagerViewController implements Initializable {
 
     }
     public void updateHomeView() throws IOException {
-        File USER_HOME = new File(System.getProperty("user.home"));
+       // File USER_HOME = new File(System.getProperty("user.home"));
         CommonData.CURRENT_LIST_VIEW_ITEM = FileType.DIRECTORY;
-        CURRENT_DIRECTORY = new FileDetail(USER_HOME);
-        updateView(CURRENT_DIRECTORY);
+//        CURRENT_DIRECTORY = new FileObject(USER_HOME);
+        Task<List<FileObject>> myTask = new Task<>() {
+            @Override
+            protected List<FileObject> call() throws Exception {
+                return listMyFiles();
+            }
+        };
+
+        myTask.setOnFailed(event -> {
+
+            myTask.getException().printStackTrace();
+                System.out.println("Task failed");
+
+        });
+        myTask.setOnSucceeded(event -> {
+
+                var result = myTask.getValue();
+                updateView(result);
+
+        });
+
+        new Thread(myTask).start();
+       // updateView(CURRENT_DIRECTORY);
     }
 
     void setFavouritePanel() {
@@ -318,11 +377,11 @@ public class FileManagerViewController implements Initializable {
            // createFile.setFileDetail(CURRENT_DIRECTORY);
            // createFile.setFileType(FileType.FILE);
             Scene scene1 = new Scene(parent, 419, 159);
-            if (UserPreference.getTHEME() == Themes.LIGHT) {
+            /*if (UserPreference.getTHEME() == Themes.LIGHT) {
                 scene1.getStylesheets().add(getClass().getResource("../view/css/LightStyle.css").toExternalForm());
             } else if (UserPreference.getTHEME() == Themes.DARK) {
                 scene1.getStylesheets().add(getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
-            }
+            }*/
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene1);
@@ -410,6 +469,10 @@ public class FileManagerViewController implements Initializable {
             menuPopup.getItems().addAll(createNewFile, createNewFolder);
         }
         CommonData.instance = this;
+        previousDirectoryButton.setOnMouseClicked(ev->{
+            previousDirectory();
+        });
+
     }
 
 

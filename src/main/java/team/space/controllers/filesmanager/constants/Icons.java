@@ -5,9 +5,12 @@ import java.nio.file.FileSystems;
 import java.util.HashMap;
 
 public class Icons {
+
+    // src/main/resources/images/file_icons
+    // src/main/resources/images/other
     private final static HashMap<String, String> iconPath = new HashMap<>();
-    private static final String fileIconDirectory = FileSystems.getDefault().getPath("src/win95/asset/file_icons").normalize().toAbsolutePath().toString();
-    private static final String otherIconDirectory = FileSystems.getDefault().getPath("src/win95/asset/other").normalize().toAbsolutePath().toString();
+    private static final String fileIconDirectory = FileSystems.getDefault().getPath("src/main/resources/images/file_icons").normalize().toAbsolutePath().toString();
+    private static final String otherIconDirectory = FileSystems.getDefault().getPath("src/main/resources/images/other").normalize().toAbsolutePath().toString();
 
     public static final String DARK_MENU_DOT = otherIconDirectory + "/menu_dark.png";
     public static final String LIGHT_MENU_DOT = otherIconDirectory + "/menu_light.png";
@@ -52,7 +55,7 @@ public class Icons {
         iconPath.put("doc", fileIconDirectory + "/doc.png");
         iconPath.put("doc#", fileIconDirectory + "/doc#.png");
         iconPath.put("exe", fileIconDirectory + "/exe.png");
-        iconPath.put("directory", fileIconDirectory + "/directory.png");
+        iconPath.put("folder", fileIconDirectory + "/directory.png");
         iconPath.put("gif", fileIconDirectory + "/gif.png");
         iconPath.put("html", fileIconDirectory + "/html.png");
         iconPath.put("ios", fileIconDirectory + "/ios.png");

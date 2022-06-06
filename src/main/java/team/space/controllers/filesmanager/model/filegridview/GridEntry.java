@@ -9,18 +9,14 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import team.space.controllers.filesmanager.constants.CommonData;
 import team.space.controllers.filesmanager.constants.Dimensions;
-import team.space.controllers.filesmanager.constants.FileType;
 import team.space.controllers.filesmanager.constants.Icons;
-import team.space.controllers.filesmanager.model.FileDetail;
 import team.space.controllers.filesmanager.model.filelistview.ListEntry;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowButtonShare;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowImageView;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowLabel;
-//import team.space.controllers.filesmanager.model.wirelessTransfer.wirelessfileslistview.ListOfFileTransfer;
-
+import team.space.requests.files.getfiles.FileObject;
 
 import java.io.File;
-import java.io.IOException;
 
 //import static win95.utilities.filehandling.OpenFile.doubleClick;
 
@@ -30,11 +26,11 @@ public class GridEntry {
     private RowImageView rowImageView;
     private RowLabel rowNameLabel;
     private RowButtonShare share;
-    private FileDetail fileDetail;
+    private FileObject fileDetail;
     private ListEntry listEntry;
     GridPane fileBlock;
 
-    public GridEntry(FileDetail fileDetail) {
+    public GridEntry(FileObject fileDetail) {
         setData(fileDetail);
         listEntry = new ListEntry(fileDetail);
         listEntry.setGridEntry(this);
@@ -48,10 +44,10 @@ public class GridEntry {
         makeFileBlock();
     }
 
-    private void setData(FileDetail fileDetail) {
+    private void setData(FileObject fileDetail) {
         this.fileDetail = fileDetail;
-        this.name = fileDetail.getFileName();
-        this.url = Icons.getFileIconPath(fileDetail.getFileExtension());
+        this.name = fileDetail.getDetail().getOriginalFilename();
+        this.url = Icons.getFileIconPath(fileDetail.getDetail().getMimeType());
 
         rowNameLabel = new RowLabel(fileDetail);
 
@@ -111,7 +107,7 @@ public class GridEntry {
         this.share = share;
     }
 
-    public FileDetail getFileDetail() {
+    public FileObject getFileDetail() {
         return fileDetail;
     }
 
@@ -131,7 +127,7 @@ public class GridEntry {
         this.fileBlock = fileBlock;
     }
 
-    public void setFileDetail(FileDetail fileDetail) {
+    public void setFileDetail(FileObject fileDetail) {
         this.fileDetail = fileDetail;
     }
 
@@ -183,7 +179,7 @@ public class GridEntry {
 
         });
 
-        if (listEntry.getFileDetail().getFileType() == FileType.DIRECTORY) {
+        if (listEntry.getFileDetail().getDetail().getMimeType() .equals("folder")) {
             MenuItem menuItem2 = new MenuItem("Open in Terminal");
             menuItem2.getStyleClass().add("menu-item");
             menuItem2.setOnAction(e -> {
@@ -193,7 +189,7 @@ public class GridEntry {
             });
             contextMenu.getItems().add(menuItem2);
         }
-        if (listEntry.getFileDetail().getFileType() != FileType.DIRECTORY) {
+        if (!listEntry.getFileDetail().getDetail().getMimeType() .equals("folder")) {
             MenuItem share = new MenuItem("Share");
             share.getStyleClass().add("menu-item");
             share.setOnAction(e -> {
@@ -207,7 +203,7 @@ public class GridEntry {
         menuItem3.getStyleClass().add("menu-item");
         menuItem3.setOnAction(e -> {
             CommonData.instance.deleteView(this);
-            if (listEntry.getFileDetail().getFileType() == FileType.DIRECTORY) {
+            if (listEntry.getFileDetail().getDetail().getMimeType().equals("folder")) {
                // SystemCommands.deleteFolder(listEntry.getFileDetail().getFilePath());
             } else {
                // SystemCommands.deleteFile(listEntry.getFileDetail().getFilePath());

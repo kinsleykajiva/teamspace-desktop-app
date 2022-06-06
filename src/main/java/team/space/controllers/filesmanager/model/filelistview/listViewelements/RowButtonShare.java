@@ -1,25 +1,25 @@
 package team.space.controllers.filesmanager.model.filelistview.listViewelements;
 
 import javafx.scene.control.Button;
-import team.space.controllers.filesmanager.model.FileDetail;
-//import win95.model.FileDetail;
+import team.space.requests.files.getfiles.FileObject;
+//import team.space.requests.files.fetchfiles.FileObject;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RowButtonShare extends Button implements ActionListener {
-    private final FileDetail fileDetail;
+    private final FileObject fileDetail;
     private final String name;
     private final String path;
 
-    public RowButtonShare(FileDetail fileDetail, String text) {
+    public RowButtonShare(FileObject fileDetail, String text) {
         super(text);
         this.fileDetail = fileDetail;
-        this.name = fileDetail.getFileName();
-        this.path = fileDetail.getFilePath();
+        this.name = fileDetail.getDetail().getOriginalFilename();
+        this.path = fileDetail.getDetail().getUrl();
     }
 
-    public FileDetail getFileDetail() {
+    public FileObject getFileDetail() {
         return fileDetail;
     }
 

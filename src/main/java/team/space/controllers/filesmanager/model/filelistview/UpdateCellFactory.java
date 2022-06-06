@@ -8,18 +8,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import team.space.controllers.filesmanager.constants.CommonData;
 import team.space.controllers.filesmanager.constants.Dimensions;
-import team.space.controllers.filesmanager.constants.FileType;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowGridPane;
 import team.space.controllers.filesmanager.model.filelistview.listViewelements.RowLabel;
-//import win95.constants.CommonData;
-//import win95.constants.Dimensions;
-//import win95.constants.FileType;
-//import win95.debug.LogsPrinter;
-//import win95.model.filelistview.listViewelements.RowGridPane;
-//import win95.model.filelistview.listViewelements.RowLabel;
-//import win95.utilities.filehandling.os.SystemCommands;
 
 import java.io.IOException;
+
+import static team.space.controllers.filesmanager.filehandling.OpenFile.doubleClick;
 
 //import static win95.utilities.filehandling.OpenFile.doubleClick;
 
@@ -45,7 +39,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             item.refresh();
             grid.add(item.getRowImageView(), 1, 0);
             grid.add(item.getRowNamelabel(), 2, 0, 3, 1);
-            if (item.getFileDetail().getFileType() == FileType.FILE) {
+            if (!item.getFileDetail().getDetail().getMimeType().equals("folder") ) {
                 grid.add(item.getShare(), 5, 0);
             }
             grid.setAlignment(Pos.BASELINE_LEFT);
@@ -60,7 +54,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
               //  CommonData.instance.showAddTagToFileDialog(item);
 
             });
-            if (item.getFileDetail().getFileType() == FileType.DIRECTORY) {
+            if (item.getFileDetail().getDetail().getMimeType().equals("folder")) {
                 MenuItem menuItem2 = new MenuItem("Open in Terminal");
                 menuItem2.getStyleClass().add("menu-item");
                 menuItem2.setOnAction(e -> {
@@ -74,7 +68,7 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             menuItem3.getStyleClass().add("menu-item");
             menuItem3.setOnAction(e -> {
                 CommonData.instance.deleteView(item.getGridView());
-                if (item.getFileDetail().getFileType() == FileType.DIRECTORY) {
+                if (item.getFileDetail().getDetail().getMimeType().equals("folder") ) {
                  //   SystemCommands.deleteFolder(item.getFileDetail().getFilePath());
                 } else {
                  //   SystemCommands.deleteFile(item.getFileDetail().getFilePath());
@@ -85,6 +79,13 @@ public class UpdateCellFactory extends ListCell<ListEntry> {
             this.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     if (event.getClickCount() == 2) {
+                        System.out.println("|==>| clicked ==> || ==>") ;
+
+                        try {
+                            doubleClick( item.getFileDetail().getChildren() );
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                        /* try {
                             //doubleClick(item.getFileDetail());
                         } catch (IOException e) {

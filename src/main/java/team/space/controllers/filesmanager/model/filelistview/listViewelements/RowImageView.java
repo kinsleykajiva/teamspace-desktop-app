@@ -4,19 +4,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import team.space.controllers.filesmanager.constants.Dimensions;
 import team.space.controllers.filesmanager.constants.LogicConstants;
-import team.space.controllers.filesmanager.model.FileDetail;
-/*import win95.constants.Dimensions;
-import win95.constants.LogicConstants;
-import win95.model.FileDetail;*/
+import team.space.requests.files.getfiles.FileObject;
+//import team.space.requests.files.fetchfiles.FileObject;
 
 import java.io.File;
 
 public class RowImageView extends ImageView {
-    private final FileDetail fileDetail;
+    private final FileObject fileDetail;
     private String imageURL;
     private Image image;
 
-    public RowImageView(FileDetail fileDetail) {
+    public RowImageView(FileObject fileDetail) {
         this.fileDetail = fileDetail;
         this.setFitHeight(Dimensions.LISTVIEW_ROWIMAGEVIEW);
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
@@ -27,13 +25,13 @@ public class RowImageView extends ImageView {
         this.setFitWidth(Dimensions.LISTVIEW_ROWIMAGEVIEW);
     }
 
-    public RowImageView(FileDetail fileDetail, LogicConstants previewMode) {
+    public RowImageView(FileObject fileDetail, LogicConstants previewMode) {
         this.fileDetail = fileDetail;
         this.setFitHeight(Dimensions.PREVIEW_FILE_ICON);
         this.setFitWidth(Dimensions.PREVIEW_FILE_ICON);
     }
 
-    public FileDetail getFileDetail() {
+    public FileObject getFileDetail() {
         return fileDetail;
     }
 
@@ -53,8 +51,8 @@ public class RowImageView extends ImageView {
 
     @Override
     public String toString() {
-        return "{{" + fileDetail.getFileName() + "}}" + '\n' +
-                "{{" + fileDetail.getFilePath() + "}}" + '\n';
+        return "{{" + fileDetail.getName() + "}}" + '\n' +
+                "{{" + fileDetail.getDetail().getUrl() + "}}" + '\n';
     }
 
     public RowImageView getCopy() {

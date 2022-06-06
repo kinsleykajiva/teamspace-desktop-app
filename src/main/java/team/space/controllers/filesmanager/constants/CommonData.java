@@ -3,7 +3,10 @@ package team.space.controllers.filesmanager.constants;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import team.space.controllers.filesmanager.FileManagerViewController;
-import team.space.controllers.filesmanager.model.FileDetail;
+import team.space.requests.files.getfiles.FileObject;
+
+import java.util.List;
+//import team.space.requests.files.fetchfiles.FileObject;
 
 
 public class CommonData {
@@ -11,7 +14,7 @@ public class CommonData {
     public static FileManagerViewController instance = null;
     public static Scene CONTROLLER_SCENE = null;
     public static LogicConstants.OS OS = LogicConstants.OS.UNKNOWN;
-    public static FileDetail CURRENT_DIRECTORY = null;
+    public static List< FileObject > CURRENT_DIRECTORY = null;
 
     public static String VIEW_MODE = "LISTVIEW";
 
