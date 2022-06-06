@@ -57,6 +57,8 @@ public class FileManagerViewController implements Initializable {
     @FXML
     private AnchorPane middle;
     @FXML
+    private Label txtPath;
+    @FXML
     private AnchorPane middleTop;
     public static String BUTTON_PRESSED = "NONE";
     ContextMenu menuPopup;
@@ -218,6 +220,18 @@ public class FileManagerViewController implements Initializable {
     public boolean updateView(List<FileObject> files) {
        //  if (files == null) return false;
       //  File parentPath = fileDetail.get();
+        if(files.size() >0){
+            txtPath.setText("Path://"+files.get(0).getDetail().getFolder());
+          //  System.out.println( files.get(0).getDetail() + " ");
+            System.err.println( " }}}}}");
+        }else{
+            if(files.size()  == 0){
+                // this is a file or there are np  other files in the directory
+                System.out.println( files );
+            }
+        }
+        System.out.println( files.size() + " }}}}}");
+
 
      //   List<FileObject> files = getFilesMap().get(fileDetail.getFolder());
         //parentPath.listFiles();

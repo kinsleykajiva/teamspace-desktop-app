@@ -11,7 +11,7 @@ public class RowLabel extends Label {
     private final FileObject fileDetail;
 
     public RowLabel(FileObject fileDetail) {
-        super(fileDetail.getName());
+        super(fileDetail.getDetail().getMimeType().equals("folder") ? fileDetail.getName(): fileDetail.getDetail().getOriginalFilename());
         this.fileDetail = fileDetail;
     }
 
