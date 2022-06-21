@@ -1,14 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import impl.com.calendarfx.view.AutoScrollPane?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="team.space.controllers.HomeController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="692.0" prefWidth="1031.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="team.space.controllers.HomeController">
+   <children>
+      <Pane prefHeight="145.0" prefWidth="1062.0" style="-fx-background-color: linear-gradient(to left,#795AF3 ,#4849a1);" styleClass="head-background" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label layoutX="20.0" layoutY="20.0" text="Team Space" textFill="WHITE">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="85.0" text="Teams Space To Communicate As A One Organisation" textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <AnchorPane layoutY="146.0" maxWidth="-Infinity" prefHeight="401.0" prefWidth="1031.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" layoutY="140.0" prefHeight="241.0" prefWidth="1031.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <AreaChart fx:id="areaChart" alternativeColumnFillVisible="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="280.0" prefWidth="1015.0" styleClass="main-chart" title="Usage States" HBox.hgrow="ALWAYS">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis minorTickCount="0" side="LEFT" />
+                     </yAxis>
+                  </AreaChart>
+               </children>
+               <styleClass>
+                  <String fx:value="border" />
+                  <String fx:value="border-1" />
+               </styleClass>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <JFXButton layoutX="800.0" layoutY="90.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="163.0" ripplerFill="WHITE" style="-fx-background-color: #473E98;" text="Home" textFill="WHITE" AnchorPane.rightAnchor="87.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <HBox alignment="CENTER" layoutY="150.0" prefHeight="134.0" prefWidth="1036.0" spacing="20.0" style="-fx-border-color: grey; -fx-border-radius: 20; -fx-border-insets: 10;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <VBox prefHeight="101.0" prefWidth="200.0" style="-fx-padding: 5;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox prefHeight="93.0" prefWidth="345.0" style="-fx-border-color: grey; -fx-border-radius: 20;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="93.0" prefWidth="271.0">
+                           <children>
+                              <JFXButton cache="true" cacheHint="SPEED" contentDisplay="GRAPHIC_ONLY" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" ripplerFill="WHITE" style="-fx-background-color: linear-gradient(to left,#795AF3 ,#4849a1);" text="Button">
+                                 <graphic>
+                                    <SVGPath content="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" fill="WHITE" />
+                                 </graphic>
+                              </JFXButton>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="lbl_numberRegisters" text="34" textFill="#4986e7">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="text-primary" />
+                                          <String fx:value="h3" />
+                                       </styleClass>
+                                    </Label>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: black;" text="Messages" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+               <styleClass>
+                  <String fx:value="border-1" />
+                  <String fx:value="border" />
+               </styleClass>
+            </VBox>
+            <VBox prefHeight="101.0" prefWidth="200.0" style="-fx-padding: 5;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox prefHeight="93.0" prefWidth="345.0" style="-fx-border-color: grey; -fx-border-radius: 20;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="93.0" prefWidth="271.0">
+                           <children>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" ripplerFill="WHITE" style="-fx-background-color: linear-gradient(to left,#795AF3 ,#4849a1);" styleClass="btn-warning" text="Button">
+                                 <graphic>
+                                    <SVGPath content="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="WHITE" />
+                                 </graphic>
+                              </JFXButton>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="lbl_numberRegisters2" text="231" textFill="#ff7537">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="text-warning" />
+                                          <String fx:value="h3" />
+                                       </styleClass>
+                                    </Label>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: black;" text="Notifications" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+               <styleClass>
+                  <String fx:value="border" />
+                  <String fx:value="border-1" />
+               </styleClass>
+            </VBox>
+            <VBox prefHeight="101.0" prefWidth="200.0" style="-fx-padding: 5;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox prefHeight="93.0" prefWidth="345.0" style="-fx-border-color: grey; -fx-border-radius: 20;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="93.0" prefWidth="271.0">
+                           <children>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" ripplerFill="WHITE" style="-fx-background-color: linear-gradient(to left,#795AF3 ,#4849a1);" styleClass="btn-secondary">
+                                 <graphic>
+                                    <SVGPath content="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" fill="WHITE" />
+                                 </graphic>
+                              </JFXButton>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="lbl_numberRegisters2111" text="34" textFill="#fa573c">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="text-secondary" />
+                                          <String fx:value="h3" />
+                                       </styleClass>
+                                    </Label>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: black;" text="Paid This Month" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+               <styleClass>
+                  <String fx:value="border" />
+                  <String fx:value="border-1" />
+               </styleClass>
+            </VBox>
+            <VBox prefHeight="101.0" prefWidth="200.0" style="-fx-padding: 5;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox prefHeight="93.0" prefWidth="345.0" style="-fx-border-color: grey; -fx-border-radius: 20;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="93.0" prefWidth="271.0">
+                           <children>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="53.0" prefWidth="52.0" ripplerFill="WHITE" style="-fx-background-color: linear-gradient(to left,#795AF3 ,#4849a1);">
+                                 <graphic>
+                                    <SVGPath content="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" fill="WHITE" />
+                                 </graphic>
+                              </JFXButton>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="lbl_numberRegisters21" text="32" textFill="#219297">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="text-base" />
+                                          <String fx:value="h3" />
+                                       </styleClass>
+                                    </Label>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: black;" text="Schedules" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+               <styleClass>
+                  <String fx:value="border" />
+                  <String fx:value="border-1" />
+               </styleClass>
+            </VBox>
+         </children>
+      </HBox>
+      <AutoScrollPane fx:id="bottomSection" layoutY="504.0" prefHeight="186.0" prefWidth="1031.0"  AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="504.0" />
 
+   </children>
 </AnchorPane>

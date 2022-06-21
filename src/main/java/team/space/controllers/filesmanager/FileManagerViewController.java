@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static javafx.application.Application.setUserAgentStylesheet;
 import static team.space.controllers.filesmanager.constants.CommonData.CURRENT_DIRECTORY;
@@ -43,23 +45,23 @@ import static team.space.network.ReqFilesHandler.listMyFiles;
 
 public class FileManagerViewController implements Initializable {
     @FXML
-    private ListView<ListEntry> listView;
+    public ListView<ListEntry> listView;
     @FXML
-    private ScrollPane gridViewScrollPane;
+    public ScrollPane gridViewScrollPane;
     @FXML
     private FlowPane gridView;
 
   @FXML
-    private ImageView previousDirectoryButton;
+  public ImageView previousDirectoryButton;
 
 
 
     @FXML
-    private AnchorPane middle;
+    public AnchorPane middle;
     @FXML
-    private Label txtPath;
+    public Label txtPath;
     @FXML
-    private AnchorPane middleTop;
+    public AnchorPane middleTop;
     public static String BUTTON_PRESSED = "NONE";
     ContextMenu menuPopup;
     final private ObservableList<ListEntry> observableList = FXCollections.observableArrayList();
@@ -463,15 +465,15 @@ public class FileManagerViewController implements Initializable {
         theme.setOnAction(e -> {
             Scene scene = listView.getScene();
             scene.getStylesheets().clear();
-            setUserAgentStylesheet(null);
+           // setUserAgentStylesheet(null);
             System.out.println(scene);
-            if (UserPreference.getTHEME() == Themes.DARK) {
+            /*if (UserPreference.getTHEME() == Themes.DARK) {
                 scene.getStylesheets().add(this.getClass().getResource("../view/css/LightStyle.css").toExternalForm());
                 UserPreference.setTHEME(Themes.LIGHT);
             } else if (UserPreference.getTHEME() == Themes.LIGHT) {
                 scene.getStylesheets().add(this.getClass().getResource("../view/css/DarkStyle.css").toExternalForm());
                 UserPreference.setTHEME(Themes.DARK);
-            }
+            }*/
         });
 
         MenuItem toggleFileView = new MenuItem("Toggle view mode");
@@ -485,6 +487,16 @@ public class FileManagerViewController implements Initializable {
         CommonData.instance = this;
         previousDirectoryButton.setOnMouseClicked(ev->{
             previousDirectory();
+        });
+
+        gridViewScrollPane.setOnDragOver(evt -> {
+            if (evt.getDragboard().hasFiles()) {
+                evt.acceptTransferModes(TransferMode.LINK);
+            }
+        });
+        gridViewScrollPane.setOnDragDropped(evt -> {
+            evt.setDropCompleted(true);
+            System.out.println("Drag and drop " + evt.getDragboard().getFiles().stream().map(File::getAbsolutePath).collect(Collectors.joining("\n")));
         });
 
     }

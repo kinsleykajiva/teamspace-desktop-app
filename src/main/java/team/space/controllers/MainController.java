@@ -2,8 +2,11 @@ package team.space.controllers;
 
 import com.jfoenix.controls.JFXSnackbar;
 import dev.onvoid.webrtc.PeerConnectionFactory;
+import dev.onvoid.webrtc.PeerConnectionObserver;
+import dev.onvoid.webrtc.RTCIceServer;
 import dev.onvoid.webrtc.RTCPeerConnection;
 import dev.onvoid.webrtc.media.MediaDevices;
+import dev.onvoid.webrtc.media.MediaStream;
 import dev.onvoid.webrtc.media.video.VideoDevice;
 import dev.onvoid.webrtc.media.video.VideoDeviceSource;
 import dev.onvoid.webrtc.media.video.VideoTrack;
@@ -29,6 +32,8 @@ import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import team.space.controllers.filesmanager.FileManagerViewController;
 import team.space.controllers.includecalender.CalenderViewController;
 import team.space.controllers.includechat.ChatPArentViewController;
@@ -36,18 +41,23 @@ import team.space.controllers.settings.SettingsViewController;
 import team.space.events.ApplicationEvents;
 import team.space.events.MessageEvent;
 import team.space.models.Contact;
+import team.space.requests.getallusers.User;
 import team.space.utils.MediaUtils;
 import team.space.utils.Shared;
 import team.space.utils.StageManager;
 import team.space.webrtc.janus.Entities.Room;
 import team.space.webrtc.janus.Entities.VideoItem;
+import team.space.webrtc.janus.clientapi.*;
 import team.space.webrtc.janus.utils.JanusClient;
 import team.space.webrtc.janus.utils.VideoView;
 import team.space.webrtc.webrtcutils.CallManager;
+import team.space.webrtc.webrtcutils.GroupVideoCall;
+import team.space.webrtc.webrtcutils.WebRTCUtils;
 
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -132,7 +142,7 @@ public class MainController implements Initializable, ApplicationEvents {
         }
 
     }
-    List<VBox> vBoxes ;
+    List<VBox> vBoxes ; GroupVideoCall groupVideoCall;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -189,11 +199,32 @@ public class MainController implements Initializable, ApplicationEvents {
         }));
 
         loader.start();
+        VideoView videoView = new VideoView();
+        videoView.resize(640, 480);
 // mediaUtils
-       // callManager.initJanusWebrtcSession();
+        callManager.initJanusWebrtcSession();
+        HashMap<Integer, User> groupVideoCallUsers = new HashMap<>();
+        User sender = new User();
+        sender.setId_("TTTTTT");
+        createRenderer();
         vBoxes = List.of( imgNavCalenderVBox , imgNavChatsVBox, imgHomeVBox ,  imgNavNotificationsVBox ,imgNavSettingsVBox ,  imgNavFilesVBox);
+       // groupVideoCall = new GroupVideoCall( localRender, remoteRenders,sender, groupVideoCallUsers , 1234);
+        // janusServer = new JanusServer(new JanusGlobalCallbacks());
+      //  janusServer.Connect();
+        System.out.println("MainController initialized");
+       // groupVideoCall.Start();
 
     }
+    HashMap<Integer, User> receiversHashMap; //  영상
+
+
+    private VideoView localRender =new VideoView();
+    ArrayList<VideoView> remoteRenders = new ArrayList<>();
+    //private VideoRenderer.Callbacks localRender;
+   // private Stack<VideoRenderer.Callbacks> availableRemoteRenderers = new Stack<>();
+    private int groupVideoCallRoomID;
+    private BigInteger myFeedID;
+    private HashMap<Integer, Object> groupVideoCallUsers;
     void setSelcted (VBox tagrget){
 
 
@@ -207,6 +238,33 @@ public class MainController implements Initializable, ApplicationEvents {
         });
         //tagrget.setStyle("-fx-border-color: red");
     }
+
+    JanusPluginHandle pluginHandle;
+
+    private void createRenderer(){
+        VideoView videoView = new VideoView();
+        videoView.resize(640, 480);
+        remoteRenders.add(videoView);
+         videoView = new VideoView();
+        videoView.resize(640, 480);
+        remoteRenders.add(videoView);
+        videoView = new VideoView();
+        videoView.resize(640, 480);
+        remoteRenders.add(videoView);
+
+
+        videoView = new VideoView();
+        videoView.resize(640, 480);
+        localRender= videoView;
+
+        /*
+            렌더러는 VideoRendererGui 에서 생성되고 관리되는데, create 할 경우 리턴값으로 생성된 렌더러에 대한 참조를 얻을 수 있다.
+            렌더링 화면이 겹칠 경우 나중에 create 된 렌더링이 더 위에서 화면을 그린다.
+
+         */
+    }
+
+
 
     void cameraTestLocal() {
         var peerConnectionFactory = new PeerConnectionFactory();

@@ -15,10 +15,11 @@ import team.space.webrtc.janus.Entities.Transaction;
 import java.math.BigInteger;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-public class JanusClient implements WebSocketChannel.WebSocketCallback{
-    private static final String TAG = "JanusClient";
-    private ConcurrentHashMap<BigInteger, PluginHandle> attachedPlugins = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Transaction> transactions = new ConcurrentHashMap<>();
+
+public class JanusClient implements WebSocketChannel.WebSocketCallback {
+
+    private final ConcurrentHashMap<BigInteger, PluginHandle> attachedPlugins = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Transaction> transactions = new ConcurrentHashMap<>();
     private BigInteger sessionId = null;
     private JanusCallback janusCallback;
 
@@ -182,7 +183,6 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
     }
 
     /**
-     *
      * @param subscriptionHandleId
      * @param sdp
      */
@@ -192,7 +192,6 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
             JSONObject body = new JSONObject();
             body.putOpt("request", "start");
             body.putOpt("room", roomId);
-
             message.putOpt("janus", "message");
             message.putOpt("body", body);
             message.putOpt("transaction", randomString(12));
@@ -238,7 +237,6 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
     }
 
     /**
-     *
      * @param roomId
      * @param feedId
      */
@@ -343,7 +341,7 @@ public class JanusClient implements WebSocketChannel.WebSocketCallback{
             if (sender != null) {
                 handle = attachedPlugins.get(sender);
             }
-            System.err.println("panooo Event type - onMessage:::  "+type);
+            System.err.println("panooo Event type - onMessage:::  " + type);
             switch (type) {
                 case keepalive:
                     break;

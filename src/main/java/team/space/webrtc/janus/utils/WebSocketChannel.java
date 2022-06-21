@@ -35,7 +35,7 @@ public class WebSocketChannel {
     public void sendMessage(String message) {
         if (webSocket != null && connected) {
 
-          //  System.out.println("send==>>" + message);
+           System.out.println("send==>>" + message);
            // System.out.println("send==>>" + message);
             webSocket.send(message);
         } else {
@@ -58,6 +58,7 @@ public class WebSocketChannel {
 
             System.out.println("onOpen");
             if (webSocketCallback != null) {
+                System.out.println("onOpen111");
                 webSocketCallback.onOpen();
             }
         }

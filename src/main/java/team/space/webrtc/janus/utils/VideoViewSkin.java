@@ -98,9 +98,7 @@ public class VideoViewSkin extends SkinBase<VideoView> {
 
         setResizable(control.getResize());
 
-        registerChangeListener(control.resizeProperty(), o -> {
-            setResizable(control.getResize());
-        });
+        registerChangeListener(control.resizeProperty(), o -> setResizable(control.getResize()));
     }
 
     private void setResizable(boolean resizable) {

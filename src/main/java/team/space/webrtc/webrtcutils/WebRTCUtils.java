@@ -7,8 +7,10 @@ import dev.onvoid.webrtc.media.Device;
 import dev.onvoid.webrtc.media.DeviceChangeListener;
 import dev.onvoid.webrtc.media.MediaDevices;
 import dev.onvoid.webrtc.media.MediaType;
-import dev.onvoid.webrtc.media.audio.AudioDevice;
-import dev.onvoid.webrtc.media.audio.AudioDeviceModule;
+import dev.onvoid.webrtc.media.audio.*;
+import dev.onvoid.webrtc.media.video.VideoDevice;
+import dev.onvoid.webrtc.media.video.VideoDeviceSource;
+import dev.onvoid.webrtc.media.video.VideoTrack;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.jsdp.*;
 
@@ -57,6 +59,28 @@ public class WebRTCUtils {
 
 
     }
+
+    public static PeerConnectionFactory createPeerConnectionFactory() {
+
+        PeerConnectionFactory factory11 = new PeerConnectionFactory();
+
+        VideoDeviceSource vid = new VideoDeviceSource();
+        VideoDevice device = MediaDevices.getVideoCaptureDevices().get(0);
+        vid.setVideoCaptureDevice(device);
+        vid.setVideoCaptureCapability(MediaDevices.getVideoCaptureCapabilities(device).get(0)); //I believe index 0 is auto-resolution, 17 is 1280x720 @ 10fps
+
+        AudioTrack audioTrack;
+        VideoTrack videoTrack;
+        AudioOptions audioOptions = new AudioOptions();
+        audioOptions.noiseSuppression = true;
+
+        AudioTrackSource audioSource = factory11.createAudioSource(audioOptions);
+        audioTrack = factory11.createAudioTrack("AUDIO", audioSource);
+        videoTrack = factory11.createVideoTrack("CAM", vid);
+
+        return factory11;
+    }
+
     private static final class CodecInfo {
 
         private final String format;
