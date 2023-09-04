@@ -1,5 +1,25 @@
 # Java + Maven + GitHub Actions = Native Desktop Apps
 
+<img src="Screenshot%202023-04-08%20192701.png"/>
+
+<img src="Screenshot%202023-04-08%20200707.png"/>
+
+<img src="Screenshot%202023-04-08%20200814.png"/>
+
+<img src="Screenshot%202023-04-08%20200847.png"/>
+
+<img src="Screenshot 2023-04-08 201627.png"/>
+
+<img src="Screenshot 2023-04-08 201719.png"/>
+
+<img src="Screenshot 2023-04-08 201754.png"/>
+
+<img src="Screenshot 2023-04-08 201829.png"/>
+
+<img src="Screenshot 2023-04-08 201858.png"/>
+
+<img src="Screenshot 2023-04-08 202003.png"/>
+
 [JavaFX](https://openjfx.io) or Swing + [jpackage](https://docs.oracle.com/en/java/javase/15/docs/specs/man/jpackage.html) +
 [Maven](http://maven.apache.org) template project for generating native desktop applications.
 
